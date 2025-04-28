@@ -1,0 +1,587 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %} Jesper Apps | Manage Admin{% endblock %}
+
+{% block content %}
+
+    {% load static %}
+   
+        
+    <!-- Container Start -->
+    <div class="page-wrapper">
+        <div class="main-content">
+            <!-- Page Title Start -->
+            <div class="row">
+                <div class="col xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Manage Product</h4>
+                        </div>
+                        <div class="breadcrumb-list">
+                            <ul>
+                                <li class="breadcrumb-link">
+                                    <a href="index.html"><i class="fas fa-home mr-2"></i>Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-link active">User Profile</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Products view Start -->
+            <div class="row">
+            
+                <div class="col-xl-12">
+                    <div class="card">
+                        <!-- <form class="form-validate-jquery" id="myForm" autocomplete="off" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Create Product</h4>
+                                <div class="card-options"><a class="card-options-collapse" href="javascript:;" data-bs-toggle="card-collapse" data-bs-original-title="" title=""><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:;" data-bs-toggle="card-remove" data-bs-original-title="" title=""><i class="fe fe-x"></i></a></div>
+                            </div>
+                            <div class="card-body" style="border: solid 2px green;border-radius: 10px;">
+                                <div class="row">
+                                
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                        <label class="form-label">Product Name</label>
+                                        <input class="form-control" type="text" name="product_name" id="product_name" placeholder="Enter Your Product Name" data-bs-original-title="" title="" style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3 form-select-btn">
+                                            <label class="form-label">Category</label>
+                                            <select class="form-control btn-square form-btn" name="category" required style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                                <option value="0">--Select--</option>
+                                                <option value="1">Germany</option>
+                                                <option value="2">Canada</option>
+                                                <option value="3">Usa</option>
+                                                <option value="4">Aus</option>
+                                            </select>
+                                            <span class="sel_arrow">
+                                                <i class='bx bx-chevron-down'></i>
+                                            </span>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                        <label class="form-label">Product Code</label>
+                                        <input class="form-control" type="number" name="product_code" required placeholder="Enter Your Product Code" data-bs-original-title="" title="" style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                        <label class="form-label">User Name</label>
+                                        <input class="form-control" type="text" name="user_name" required placeholder="Enter Your User Name" data-bs-original-title="" title="" style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <input class="form-control" type="text" name="password" required placeholder="Enter Your Password" data-bs-original-title="" title="" style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                        <label class="form-label">Url</label>
+                                        <input class="form-control" type="text" name="url" required placeholder="Enter Your URL" data-bs-original-title="" title="" style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="row">
+                                
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" rows="1" name="description" required placeholder="Enter Your Description" style="border: solid 1px #11a1fd;border-radius: 5px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Image</label>
+                                            
+                                            <input class="form-control p-3" type="file" name="image" required data-bs-original-title="" title="" style="border: solid 1px #11a1fd; border-radius: 5px;">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3 form-select-btn">
+                                            <label class="form-label">Country</label>
+                                            <select class="form-control btn-square form-btn" name="country" required style="border: solid 1px #11a1fd;border-radius: 5px;">
+                                                <option value="0">--Select--</option>
+                                                <option value="1">Germany</option>
+                                                <option value="2">Canada</option>
+                                                <option value="3">Usa</option>
+                                                <option value="4">Aus</option>
+                                            </select>
+                                            <span class="sel_arrow">
+                                                <i class='bx bx-chevron-down'></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+    
+                                <div style="text-align: right;">
+                                    
+                                    <button class="btn btn-primary squer-btn" type="submit" data-bs-original-title="" title="" style="text-align: right;">Save</button>
+    
+                                </div>
+                            </div>
+                        </form> -->
+                        <!-- backend/product/create_profile.html -->
+                        <!-- backend/product/create_profile.html -->
+                        <form class="form-validate-jquery" id="myForm" autocomplete="off" method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">
+                                    {% if operation == 'view' %}
+                                        Product Details
+                                    {% else %}
+                                        {% if item %}
+                                            Edit Product
+                                        {% else %}
+                                            Create Product
+                                        {% endif %}
+                                    {% endif %}
+                                </h4>
+                                <div class="card-options">
+                                    <a class="card-options-collapse" href="javascript:;" data-bs-toggle="card-collapse" data-bs-original-title="" title="">
+                                        <i class="fe fe-chevron-up"></i>
+                                    </a>
+                                    <a class="card-options-remove" href="javascript:;" data-bs-toggle="card-remove" data-bs-original-title="" title="">
+                                        <i class="fe fe-x"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body" style="border: solid 2px green; border-radius: 10px;">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Product Name</label>
+                                            {{ form.product_name }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6 col-md-4">
+                                        <label class="form-label">Category</label>
+                                        <div class="relative-position">
+                                            {{ form.category }}
+                                            <span class="sel_arrow">
+                                                <i class='bx bx-chevron-down'></i>
+                                            </span>
+                                        </div>
+                                        
+                                    </div>
+                        
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Product Code</label>
+                                            {{ form.product_code }}
+                                            <div class="alert alert-danger" role="alert" style="display:none;">
+                                                Please enter only numeric values.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">User Name</label>
+                                            {{ form.user_name }}
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Password</label>
+                                            <div class="password-input-container">
+                                                {{ form.password }}
+                                                <button type="button" id="togglePassword" class="password-toggle-btn">
+                                                    <i id="togglePasswordIcon" class="fa fa-eye-slash" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Url</label>
+                                            {{ form.url }}
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Description</label>
+                                            {{ form.description }}
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Image</label>
+                                            {% if operation == 'view' or operation == 'edit' %}
+                                                {{ form.image }}
+                                                {% if operation == 'edit' %}   
+                                                    <p class="search-note text-danger">Note: Upload image size should be 509 × 362 px and no more than 1MB</p>                                                
+                                                {% endif %}
+                                                    <img src="{% static item.image %}" alt="Product Image" class="img-fluid d-block mx-auto pt-5" width="200" height="80"/>
+                                            {% else %}
+                                                {{ form.image }}
+                                                <p class="search-note text-danger">Note: Upload image size should be 509 × 362 px and no more than 1MB</p>
+                                            {% endif %}
+                                        </div>
+                                        
+                                    </div>
+                        
+                                    <!-- <div class="col-sm-6 col-md-4">
+                                        <div class="mb-3 form-select-btn">
+                                            <label class="form-label">Country</label>
+                                            <div class="relative-position">
+                                                {{ form.country_category }}
+                                                <span class="sel_arrow">
+                                                    <i class='bx bx-chevron-down'></i>
+                                                </span>
+                                            </div>
+                                            
+                                        </div>
+                                    </div> -->
+                                </div>
+                        
+                                <div style="text-align: right;">
+                                    {% if operation == 'view' %}
+                                        <a href="{% url 'create_profile_page_with_pk' operation='edit' pk=item.pk %}" class="btn btn-primary">Edit</a>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    {% endif %}
+                                    <a href="{% url 'product_page'%}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+
+                        
+
+
+                    </div>
+                    
+                    
+                </div>
+                <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card table-card">
+                        <div class="card-header pb-0">
+                            <h4>Add projects And Upload</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-holder">
+                                <div class="table-responsive">
+                                    <table class="table table-styled mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Price</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Ai Traific</td>
+                                                <td>28 May 2022</td>
+                                                <td>Completed</td>
+                                                <td>$22,124</td>
+                                                <td class="relative">
+                                                    <a class="action-btn " href="javascript:void(0); ">
+                                                        <svg class="default-size " viewBox="0 0 341.333 341.333 ">
+                                                            <g>
+                                                                <g>
+                                                                    <g>
+                                                                        <path d="M170.667,85.333c23.573,0,42.667-19.093,42.667-42.667C213.333,19.093,194.24,0,170.667,0S128,19.093,128,42.667 C128,66.24,147.093,85.333,170.667,85.333z "></path>
+                                                                        <path d="M170.667,128C147.093,128,128,147.093,128,170.667s19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 S194.24,128,170.667,128z "></path>
+                                                                        <path d="M170.667,256C147.093,256,128,275.093,128,298.667c0,23.573,19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 C213.333,275.093,194.24,256,170.667,256z "></path>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                    <div class="action-option ">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-edit mr-2 "></i>Edit</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-trash-alt mr-2 "></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ai Traific</td>
+                                                <td>28 May 2022</td>
+                                                <td>Completed</td>
+                                                <td>$22,124</td>
+                                                <td class="relative">
+                                                    <a class="action-btn " href="javascript:void(0); ">
+                                                        <svg class="default-size " viewBox="0 0 341.333 341.333 ">
+                                                            <g>
+                                                                <g>
+                                                                    <g>
+                                                                        <path d="M170.667,85.333c23.573,0,42.667-19.093,42.667-42.667C213.333,19.093,194.24,0,170.667,0S128,19.093,128,42.667 C128,66.24,147.093,85.333,170.667,85.333z "></path>
+                                                                        <path d="M170.667,128C147.093,128,128,147.093,128,170.667s19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 S194.24,128,170.667,128z "></path>
+                                                                        <path d="M170.667,256C147.093,256,128,275.093,128,298.667c0,23.573,19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 C213.333,275.093,194.24,256,170.667,256z "></path>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                    <div class="action-option ">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-edit mr-2 "></i>Edit</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-trash-alt mr-2 "></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ai Traific</td>
+                                                <td>28 May 2022</td>
+                                                <td>Completed</td>
+                                                <td>$22,124</td>
+                                                <td class="relative">
+                                                    <a class="action-btn " href="javascript:void(0); ">
+                                                        <svg class="default-size " viewBox="0 0 341.333 341.333 ">
+                                                            <g>
+                                                                <g>
+                                                                    <g>
+                                                                        <path d="M170.667,85.333c23.573,0,42.667-19.093,42.667-42.667C213.333,19.093,194.24,0,170.667,0S128,19.093,128,42.667 C128,66.24,147.093,85.333,170.667,85.333z "></path>
+                                                                        <path d="M170.667,128C147.093,128,128,147.093,128,170.667s19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 S194.24,128,170.667,128z "></path>
+                                                                        <path d="M170.667,256C147.093,256,128,275.093,128,298.667c0,23.573,19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 C213.333,275.093,194.24,256,170.667,256z "></path>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                    <div class="action-option ">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-edit mr-2 "></i>Edit</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-trash-alt mr-2 "></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ai Traific</td>
+                                                <td>28 May 2022</td>
+                                                <td>Completed</td>
+                                                <td>$22,124</td>
+                                                <td class="relative">
+                                                    <a class="action-btn " href="javascript:void(0); ">
+                                                        <svg class="default-size " viewBox="0 0 341.333 341.333 ">
+                                                            <g>
+                                                                <g>
+                                                                    <g>
+                                                                        <path d="M170.667,85.333c23.573,0,42.667-19.093,42.667-42.667C213.333,19.093,194.24,0,170.667,0S128,19.093,128,42.667 C128,66.24,147.093,85.333,170.667,85.333z "></path>
+                                                                        <path d="M170.667,128C147.093,128,128,147.093,128,170.667s19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 S194.24,128,170.667,128z "></path>
+                                                                        <path d="M170.667,256C147.093,256,128,275.093,128,298.667c0,23.573,19.093,42.667,42.667,42.667s42.667-19.093,42.667-42.667 C213.333,275.093,194.24,256,170.667,256z "></path>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                    <div class="action-option ">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-edit mr-2 "></i>Edit</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:void(0); "><i class="far fa-trash-alt mr-2 "></i>Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="text-right mt-2">
+                                <nav class="d-inline-block">
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item disabled">
+                                        <a class="page-link" href="javascript:void(0);" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+                                        <li class="page-item">
+                                        <a class="page-link" href="javascript:void(0);">2</a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+                                        <li class="page-item">
+                                        <a class="page-link" href="javascript:void(0);"><i class="fas fa-chevron-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="ad-footer-btm">
+                <p>Copyright 2022 © SplashDash All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+
+
+   <!-- Preview Setting Box -->
+	<div class="slide-setting-box">
+        <div class="slide-setting-holder">
+            <div class="setting-box-head">
+                <h4>Dashboard Demo</h4>
+                <a href="javascript:void(0);" class="close-btn">Close</a>
+            </div>
+            <div class="setting-box-body">
+				<div class="sd-light-vs"> 
+					<a href="index.html">
+						Light Version
+						<img src="{%static 'assets/images/light.png' %}" alt=""/>
+					</a>
+				</div>
+				<div class="sd-light-vs"> 
+					<a href="https://kamleshyadav.com/html/splashdash/html/b5/splashdash-admin-template-dark/index.html">
+						dark Version
+						<img src="{%static 'assets/images/dark.png' %}" alt=""/>
+					</a>
+				</div>
+            </div>
+			<div class="sd-color-op">
+				<h5>color option</h5> 
+				<div id="style-switcher">
+					<div>
+						<ul class="colors">
+							<li>
+								<p class='colorchange' id='color'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color2'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color3'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color4'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color5'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='style'>
+								</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+   
+    <script src="{% static 'assets/backend/js/jquery-3.7.0.min.js' %}"></script>
+
+    <script src="{% static 'assets/backend/js/jquery.validate.min.js' %}"></script>
+
+    <script src="{% static 'assets/backend/js/create_profile.js' %}"></script>
+
+
+    <script>
+        $(document).ready(function()
+			{ 
+				// Initialize select2
+				$(".searchDropdown").select2();
+				// Read selected option
+			   /* $('#but_read').click(function(){
+					var username = $('#selUser option:selected').text();
+					var userid = $('#selUser').val();
+					$('#result').html("id : " + userid + ", name : " + username);
+				}); */
+				
+				//$(".searchDropdown").empty();
+				//$(".searchDropdown").select2("val", "");
+			});
+    </script>
+
+<!-- <script>
+    $(document).ready(function () {
+        $('.numeric-input').on('input', function () {
+            
+            // Allow only numeric input
+            $(this).val(function (index, value) {
+                return value.replace(/\D/g, '');
+            });
+        });
+    });
+</script> -->
+
+
+<!---------------- For Center Pop UP ------------------------->
+<!-- {% if request.COOKIES.success_message %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var successMessage = "{{ request.COOKIES.success_message }}";
+
+            // Check if the success message cookie is present
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    html: '<div style="text-align: center;"><span style="font-size: 24px;">✅ </span>' + successMessage + '</div>',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
+            // Clear the success message cookie
+            document.cookie = 'success_message=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        });
+    </script>
+{% endif %} -->
+
+<!---------------- For Top of Right Side Pop UP ------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %}{{page_title}} | My Website{% endblock %}
+
+{% block content %}
+    {% load static %}
+      <!-- Page header start-->
+      <div class="second-sub-header">
+        <div class="page-header page-header-light">
+          <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+            <div class="d-flex">
+              <div class="breadcrumb">
+                <a href="" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">
+                  Settings
+                </span>
+              </div>
+              <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Page header end-->
+
+      <div class="content"><!-- Content start-->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box2"style="border-radius:2px;">
+
+              <h4 class="page-title page-title-dashboard"> Setups </h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings">
+          <div class="row">
+            <div class="col-md-6" >
+              <div class="card-setting">
+
+                <ul class="settings-list">
+                  <a href="" title="List of Values">
+                    <li>
+                      <i class="fa fa-magic fa-icon-text-red-background"></i>
+                      <span class="list-one">List of Values</span>
+                      <p>Manage all List of Values.</p>
+                    </li>
+                  </a>
+                  <a href="{% url 'list_designation' %}" title="Designation">
+                    <li>
+                      <i class="fa fa-briefcase fa-icon-text-blue-background"></i>
+                      <span class="list-one">Designation</span>
+                      <p>Manage all Designation.</p>
+                    </li>
+                  </a>
+
+                  <a href="" title="uom">
+                    <li>
+                      <i class="fa fa-desktop fa-icon-text-gray-background"></i>
+                      <span class="list-one">UOM</span>
+                      <p>Manage all  UOM</p>
+                    </li>
+                  </a>
+
+
+                  <a href="{% url 'list_departments' %}" title="Department">
+                    <li>
+                    <i class="fa fa-level-up fa-icon-text-green-background"></i>
+                      <span class="list-one">Department</span>
+                      <p>Manage all Department.</p>
+                    </li>
+                  </a>
+
+                </ul>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="card-setting">
+                <ul class="settings-list">
+                  <!-- <a href="" title="SEO">
+                    <li>
+                      <i class="fa fa-search fa-icon-text-blue-background"></i>
+                      <span class="list-one">SEO</span>
+                      <p>Manage all SEO.</p>
+                    </li>
+                  </a> -->
+                  <a href="" title="Product Categories">
+                    <li>
+                      <i class="fa fa-product-hunt fa-icon-text-aqua-background"></i>
+                      <span class="list-one">Product Categories</span>
+                      <p>Manage all Product Categories</p>
+                    </li>
+                  </a>
+
+
+                    <a href="" title="Document Numbering">
+                      <li>
+                        <i class="fa fa-arrows fa-icon-text-blue-background"></i>
+                        <span class="list-one">Document Numbering</span>
+                        <p>Manage all Document Numbering.</p>
+                      </li>
+                    </a>
+
+                    <a href="" title="Blood Group">
+                      <li>
+                        <i class="fa fa-bolt fa-icon-text-red-background"></i>
+                        <span class="list-one">Blood Groups</span>
+                        <p>Manage all Blood Groups.</p>
+                      </li>
+                    </a>
+
+
+
+                </ul>
+              </div>
+
+              <!-- Printer settings -->
+
+              <!-- Printer settings end -->
+            </div>
+          </div>
+        </div>
+      </div><!-- Content end-->
+
+    {% endblock %}

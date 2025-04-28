@@ -1,0 +1,468 @@
+
+{% extends "backend/base/base.html" %}
+
+{% block title %}Jesper Apps | Manage Product{% endblock %}
+
+{% block content %}
+
+    {% load static %}
+	
+	
+	<!-- Container Start -->
+    <div class="page-wrapper">
+        <div class="main-content">
+            <!-- Page Title Start -->
+            <div class="row">
+                <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-box ad-title-box-use">
+                            <h4 class="page-title">Customers</h4>
+                        </div>
+                        <div class="ad-breadcrumb">
+                            <ul>
+                                <li>
+                                    <div class="ad-user-btn">
+                                        <input class="form-control" type="text" placeholder="Search Here..." id="text-input">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 56.966 56.966">
+                                            <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23
+                                            s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92
+                                            c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17
+                                            s-17-7.626-17-17S14.61,6,23.984,6z"></path>
+                                        </svg>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="add-group">
+                                        <a class="ad-btn" href="{% url 'create_profile_page' operation='create'%}">New Customers</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table Start -->
+            <div class="row">
+                <!-- Styled Table Card-->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card table-card">
+                        
+                        <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                    <h4>Customers List</h4>    
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">                                  
+                                    
+                                    <!-- <div class="row ">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                           
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                                    <label for="show">Show:</label>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <select class="form-control" id="show" name="show">
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                    <span class="sel_arrow">
+                                                        <i class='bx bx-chevron-down'></i>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            
+                                        </div>
+                                    </div> -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
+                        <div class="card-body">
+                            <div class="row pb-3">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                <div class="">
+                                           
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto">
+                                                            <!-- <h4 class="page-title">Show</h4> -->
+                                                            <label class="">Show </label>
+
+                                                        </div>
+                                                        <div class="col-auto" style="width: 150px;">
+                                                            <select id="pagination-limit" class="form-control" aria-controls="example" name="example_length" onchange="changePaginationLimit()">
+                                                                <option value="10" {% if initial_limit == 10 %}selected{% endif %}>10</option>
+                                                                <option value="25" {% if initial_limit == 25 %}selected{% endif %}>25</option>
+                                                                <option value="50" {% if initial_limit == 50 %}selected{% endif %}>50</option>
+                                                                <option value="100" {% if initial_limit == 100 %}selected{% endif %}>100</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <label class="">entries </label>
+                                                        </div>
+                                                    </div>
+                                                    
+        
+                                                </div>
+        
+                                                
+                                            </div>
+
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 justify-content-end text-right">
+                                                        <div class="ad-breadcrumb" style="width: 100% !important;">
+                                                            <form id="search-form" method="GET" class="d-inline-block">
+                                                                <ul>
+                                                                    <li>
+                                                                        <div class="ad-user-btn ml-auto">
+                                                                            <input class="form-control" type="text" placeholder="Search Here..." id="example-search-input" name="example-search-input" value="{{ query }}">
+                                                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966">
+                                                                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23
+                                                                                    s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92
+                                                                                    c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17
+                                                                                    s-17-7.626-17-17S14.61,6,23.984,6z"></path>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="add-group">
+                                                                            <!-- <a class="ad-btn" href="#">Search</a> -->
+                                                                            <button type="submit" class="btn btn-primary" style="min-height: 50px;border-radius: 5px 5px 5px 5px;font-size: 14px;padding: 0 20px;border:1px solid">Search</button>
+
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div id="example_wrapper" class="dataTables_wrapper no-footer">
+								<div id="example_wrapper" class="dataTables_wrapper no-footer">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <div class="" id="">
+                                                <div class="row">
+                                                    <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 d-flex align-items-center justify-content-center">
+                                                        <label class="">Show </label>
+                                                    </div>
+                                                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 d-flex align-items-center justify-content-center">
+                                                        <select id="pagination-limit" class="form-control" aria-controls="example" name="example_length" onchange="changePaginationLimit()">
+                                                            <option value="10" {% if initial_limit == 10 %}selected{% endif %}>10</option>
+                                                            <option value="25" {% if initial_limit == 25 %}selected{% endif %}>25</option>
+                                                            <option value="50" {% if initial_limit == 50 %}selected{% endif %}>50</option>
+                                                            <option value="100" {% if initial_limit == 100 %}selected{% endif %}>100</option>
+                                                        </select> 
+                                                    </div>
+                                                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 d-flex align-items-center text-left">
+                                                        <label class="">entries </label>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <div id="example_filter" class="dataTables_filter">
+                                                <label>Search:
+                                                    <form id="search-form" method="GET" class="d-inline-block">
+                                                        <div class="input-group">
+                                                            <input type="search" id="example-search-input" name="example-search-input" class="form-control" aria-controls="example" placeholder="Search" value="{{ query }}">
+                                                            <button type="submit" class="btn btn-primary" style="min-height: 50px;border-radius: 0px 5px 5px 0px;font-size: 14px;padding: 0 20px;border:1px solid"><i class='bx bx-search-alt'></i></button>
+                                                        </div>
+                                                    </form>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div> -->
+                            {% if datas|length > 0 %}
+                                <div class="chart-holder">
+                                    <div class="table-responsive">
+                                        <table class="table table-styled mb-0 table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Action</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Product Name</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Category</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Product Code</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">User Name</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Password</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">URL</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Description</th>
+                                                    <th class="text-center text-white" style="background-color: #1598e1;">Image</th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for data in datas %}
+                                                    <tr>
+                                                        <td style="position: relative;">
+                                                            <!-- <a href="{% url 'create_profile_page_with_pk' operation='edit' pk=data.pk %}">Edit</a> | <a href="#">Delete</a> -->
+                                                            <div class="dropdown">
+                                                                <button class="dropdown-btn" onclick="toggleDropdown('{{ data.pk }}')">Action</button>
+                                                                <div class="dropdown-content" id="myDropdown{{ data.pk }}">
+                                                                    <a href="{% url 'create_profile_page_with_pk' operation='view' pk=data.pk %}"><i class="fa fa-eye"></i> View</a>
+                                                                    <a href="{% url 'create_profile_page_with_pk' operation='edit' pk=data.pk %}"><i class="fa fa-edit"></i> Edit</a>
+                                                                    <a href="{% url 'create_profile_page_with_pk' operation='delete' pk=data.pk %}"><i class="fa fa-trash"></i> Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <style>
+                                                                
+                                                                .dropdown-btn {
+                                                                    background-color: transparent;
+                                                                    
+                                                                    color: #1598e1;/* #28C76F */
+                                                                    background-image: none;
+                                                                    border: 1px solid  #1598e1;
+                                                                    
+                                                                    text-align: center;
+                                                                    text-decoration: none;
+                                                                    display: inline-block;
+                                                                    
+                                                                    cursor: pointer;
+                                                                    padding: 0.3125rem 0.75rem;
+                                                                    font-size: .75rem;
+                                                                    line-height: 1.6667;
+                                                                    border-radius: 0.125rem;
+                                                                    
+                                                                }
+                                                        
+                                                                
+                                                                .dropdown-content {
+                                                                    display: none;
+                                                                    position: relative;
+                                                                    background-color: #f9f9f9;
+                                                                    width: 100px;
+                                                                    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                                                                    z-index: 1;
+                                                                    border-radius: 10px;
+                                                                }
+                                                        
+                                                            
+                                                                .dropdown-content a {
+                                                                    color: black;
+                                                                    padding: 0px;
+                                                                    display: block;
+                                                                    text-decoration: none;
+                                                                }
+                                                        
+                                                                
+                                                                .dropdown-btn:hover {
+                                                                    background-color: #1598e1;
+                                                                    color: white;
+                                                                }
+                                                        
+                                                                .dropdown-content a:hover {
+                                                                    background-color: #1598e1;
+                                                                    color: white;
+                                                                }
+                                                            </style>
+                                                        
+                                                            <script> 
+                                                                function toggleDropdown(pk) {
+                                                                    var dropdown = $("#myDropdown" + pk);
+                                                                    dropdown.toggle();
+                                                                }
+
+                                                                $(document).on("click", function (event) {
+                                                                    if (!$(event.target).hasClass('dropdown-btn')) {
+                                                                        $(".dropdown-content").hide();
+                                                                    }
+                                                                });
+                                                            </script>
+
+                                                            <script>
+                                                                $(document).ready(function() {
+                                                                    $('#pagination-limit').on('change', function() {
+                                                                        var limit = $(this).val();
+                                                                        $('#selected-limit').text(limit);
+                                                                        var url = window.location.href.split('?')[0];
+                                                                        window.location.href = url + "?pagination-limit=" + limit;
+                                                                    });
+                                                                });
+                                                            </script>
+
+                                                            
+                                                        </td>
+                                                        <td>{{ data.product_name }}</td>
+                                                        <td>{{ data.category }}</td>
+                                                        <td>{{ data.product_code }}</td>
+                                                        <td>{{ data.user_name }}</td>
+                                                        <td>{{ data.password }}</td>
+                                                        <td>{{ data.url }}</td>
+                                                        <td>{{ data.description }}</td>
+                                                        <td>
+                                                            {% if data.image %}
+                                                                <img src="{% static data.image %}" alt="Image" width="100" height="80">
+
+                                                            {% else %}
+                                                                No Image
+                                                            {% endif %}
+                                                        </td>
+
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                    <div class="dataTables_info" id="example_info" role="status" aria-live="polite">
+                                        Showing {{ datas.start_index }} to <span id="selected-limit">{{ initial_limit }}</span> of {{ total_entries }} entries
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                    {% if datas|length > 0 %}
+                                        <div class="text-right">
+                                            <nav class="d-inline-block">
+                                                <ul class="pagination mb-0">
+                                                    {% if datas.has_previous %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page=1" tabindex="-1">First<i class='bx bx-left-arrow-alt'></i></a>
+                                                        </li>
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page={{ datas.previous_page_number }}">Prev<i class='bx bx-left-arrow-alt'></i></a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">First<i class='bx bx-left-arrow-alt'></i></span>
+                                                        </li>
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">Prev<i class='bx bx-left-arrow-alt'></i></span>
+                                                        </li>
+                                                    {% endif %}
+
+                                                    {% for page_num in datas.paginator.page_range %}
+                                                        {% if datas.number == page_num %}
+                                                            <li class="page-item active">
+                                                                <span class="page-link">{{ page_num }}</span>
+                                                            </li>
+                                                        {% else %}
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% if datas.has_next %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page={{ datas.next_page_number }}">Next<i class='bx bx-right-arrow-alt' ></i></a>
+                                                        </li>
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page={{ datas.paginator.num_pages }}">Last<i class='bx bx-right-arrow-alt' ></i></a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">Next<i class='bx bx-right-arrow-alt' ></i></span>
+                                                        </li>
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">Last<i class='bx bx-right-arrow-alt' ></i></span>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="ad-footer-btm">
+                <p>Copyright 2022 © SplashDash All Rights Reserved.</p>
+            </div>  
+        </div>
+    </div>				
+					
+    <!-- Preview Setting Box -->
+	<div class="slide-setting-box">
+        <div class="slide-setting-holder">
+            <div class="setting-box-head">
+                <h4>Dashboard Demo</h4>
+                <a href="javascript:void(0);" class="close-btn">Close</a>
+            </div>
+            <div class="setting-box-body">
+				<div class="sd-light-vs"> 
+					<a href="index.html">
+						Light Version
+						<img src="{% static 'assets/backend/img/light.png' %}" alt=""/>
+					</a>
+				</div>
+				<div class="sd-light-vs"> 
+					<a href="https://kamleshyadav.com/html/splashdash/html/b5/splashdash-admin-template-dark/index.html">
+						dark Version
+						<img src="{% static 'assets/backend/img/dark.png' %}" alt=""/>
+					</a>
+				</div>
+            </div>
+			<div class="sd-color-op">
+				<h5>color option</h5> 
+				<div id="style-switcher">
+					<div>
+						<ul class="colors">
+							<li>
+								<p class='colorchange' id='color'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color2'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color3'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color4'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='color5'>
+								</p>
+							</li>
+							<li>
+								<p class='colorchange' id='style'>
+								</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+    <!-- Preview Setting -->
+
+    <script src="{% static 'assets/backend/js/create_profile.js' %}"></script>
+   
+	{% endblock %}

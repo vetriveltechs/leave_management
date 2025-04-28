@@ -1,0 +1,368 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html>
+    {%load static %}
+<head>
+    <title>{% block title %}My Website{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo:400,400i,500,500i,600,600i,700,700i&amp;display=swap"/>
+
+        <link rel="stylesheet" href="{% static 'assets/frontend/bootstrap-5.3.0-dist/css/bootstrap.min.css' %}" rel="stylesheet"/>
+
+        <link rel="stylesheet" href="{% static 'assets/frontend/bootstrap-5.3.0-dist/bootstrap.bundle.min.js' %}" rel="stylesheet"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- <script src="{% static 'assets/frontend/js/jquery-3.7.0.min.js' %}"></script>
+
+        <script src="{% static 'assets/frontend/js/jquery.validate.min.js' %}"></script> -->
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/fonts.css' %}"/>
+
+        <!-- <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css"> -->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/font-awesome.min.css' %}"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/icofont.min.css' %}"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/style.css' %}"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/select2.min.css' %}"/>
+
+        <link rel="stylesheet" id="theme-change" type="text/css" href="#" />
+        <!-- Favicon Link -->
+        <link rel="shortcut icon" type="image/png" href="{% static 'assets/frontend/img/favicon.png' %}"/>
+
+        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/fonts/font-awesome.css' %}"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/fonts/font-awesome.min.css' %}"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/fonts/poppins.css' %}"/>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/frontend/css/icomoon/styles.min.css' %}"/>
+
+    <!-- Template Style -->
+</head>
+<body>
+
+     <!--=================================
+    header -->
+    <header class="header default">
+
+        <div class="container">
+  
+          <div class="row">
+  
+              <div class="col-sm-12">
+  
+                  <nav class="navbar navbar-static-top navbar-expand-lg">
+  
+                  <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"><i class="fas fa-align-left"></i></button>
+  
+                  <a class="navbar-brand" href="{% url 'home_page' %}">
+  
+                      <img class="img-fluid" src="{% static 'assets/frontend/img/logo-1.png' %}" alt="logo">
+  
+                  </a>
+  
+                  <div class="navbar-collapse collapse">
+  
+                      <ul class="nav navbar-nav">
+  
+                  <li class="nav-item dropdown active">
+  
+                      <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home</a>
+                      
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      
+                      <li><a class="dropdown-item" href="{%url 'home_page' %}">Home Default<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-02.html">Home London<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-03.html">Home New York<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-04.html">Home Los Angeles<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-05.html">Home Mumbai <span class="badge bg-danger ms-2">Hot</span> <i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-06.html">Home Shanghai<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-07.html">Home Chicago<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li class="active"><a class="dropdown-item" href="{%url 'index_page' %}">Home New Delhi<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-09.html">Home Berlin<i class="fas fa-arrow-right"></i></a></li>
+                      
+                      <li><a class="dropdown-item" href="index-10.html">Home Paris<i class="fas fa-arrow-right"></i></a></li>
+                      
+                  </ul>
+                  </li>
+  
+                  <li class="dropdown nav-item">
+                      <a href="properties.html" class="nav-link" data-bs-toggle="dropdown">Pages</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{%url 'contact_page' %}">Contact<i class="fas fa-arrow-right"></i></a></li>
+  
+                          <li><a class="dropdown-item" href="pricing.html">Pricing<i class="fas fa-arrow-right"></i></a></li>
+  
+                          <li><a class="dropdown-item" href="testimonials.html">Testimonials</a></li>
+  
+                          <li><a class="dropdown-item" href="blog.html">Blog 01<i class="fas fa-arrow-right"></i></a></li>
+                          
+                          <li><a class="dropdown-item" href="blog-02.html">Blog 02<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="blog-detail.html">Blog Detail<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="elements.html">Elements<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="faq.html">Faq<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="coming-soon.html">Coming Soon<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="error-404.html">404 Error<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="privacy-policy.html">Privacy Policy<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="terms-and-conditions.html">Terms & Conditions<i class="fas fa-arrow-right"></i></a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown nav-item">
+                      <a href="properties.html" class="nav-link" data-bs-toggle="dropdown">Company</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="{% url 'about_page' %}">About Us<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="careers.html">Careers<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="how-we-work.html">How We Work<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="our-team.html">Our Team<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="mission-vision.html">Mission Vision<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="our-value.html">Our Value<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="service.html">Services<i class="fas fa-arrow-right"></i></a></li>
+                          <li><a class="dropdown-item" href="service-detail.html">Services Detail<i class="fas fa-arrow-right"></i></a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown nav-item">
+                      <a href="industry.html" class="nav-link" data-bs-toggle="dropdown">Industries</a>
+                      <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="industry.html">Industries 01<i class="fas fa-arrow-right"></i></a></li>
+                      <li><a class="dropdown-item" href="industry-02.html">Industries 02<i class="fas fa-arrow-right"></i></a></li>
+                      <li><a class="dropdown-item" href="industry-03.html">Industries 03<i class="fas fa-arrow-right"></i></a></li>
+                      <li><a class="dropdown-item" href="industry-04.html">Industries 04<i class="fas fa-arrow-right"></i></a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown nav-item">
+                      <a href="properties.html" class="nav-link" data-bs-toggle="dropdown">Case Studies</a>
+                      <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="case-study.html">Case Studies<i class="fas fa-arrow-right"></i></a></li>
+                      <li><a class="dropdown-item" href="case-study-single.html">Case Study Single<i class="fas fa-arrow-right"></i></a></li>
+                      <li><a class="dropdown-item" href="case-study-single-02.html">Case Study Single 02<i class="fas fa-arrow-right"></i></a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown nav-item mega-menu">
+                      <a href="#" class="nav-link" data-bs-toggle="dropdown">Mega Menu</a>
+                      <ul class="dropdown-menu megamenu">
+                      <li>
+                          <div class="row">
+                          <div class="col-sm-6 col-lg-3">
+                              <h6 class="mb-3 nav-title">Menu Title </h6>
+                              <ul class="list-unstyled mt-lg-3">
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              </ul>
+                          </div>
+                          <div class="col-sm-6 col-lg-3">
+                              <h6 class="mb-3 nav-title">Menu Title</h6>
+                              <ul class="list-unstyled mt-lg-3">
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              </ul>
+                          </div>
+                          <div class="col-sm-6 col-lg-3">
+                              <h6 class="mb-3 nav-title">Menu Title</h6>
+                              <ul class="list-unstyled mt-lg-3">
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              </ul>
+                          </div>
+                          <div class="col-sm-6 col-lg-3">
+                              <h6 class="mb-3 nav-title">Menu Title</h6>
+                              <ul class="list-unstyled mt-lg-3">
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              <li><a href="#">Menu item </a></li>
+                              </ul>
+                          </div>
+                          </div>
+                      </li>
+                      </ul>
+                  </li>
+                  </ul>
+                  </div>
+                  <div class="d-none d-sm-flex ms-auto me-5 me-lg-0 pe-4 pe-lg-0">
+                      <ul class="nav ms-1 ms-lg-2 align-self-center">
+                      <li class="header-search nav-item">
+                          <div class="search">
+                          <a class="search-btn not_click" href="javascript:void(0);"></a>
+                          <div class="search-box not-click">
+                              <form action="https://themes.potenzaglobalsolutions.com/html/hi-soft/search.html" method="get">
+                              {% csrf_token %}
+                              <input type="text" class="not-click form-control" name="search" placeholder="Search..">
+                              <button class="search-button" type="submit"> <i class="fa fa-search not-click"></i></button>
+                              </form>
+                          </div>
+                          </div>
+                      </li>
+                      </ul>
+                  </div>
+                  </nav>
+              </div>
+          </div>
+        </div>
+      </header>
+      <!--=================================
+      header -->
+
+    <div class="">
+        {% block content %}{% endblock %}
+    </div>
+
+      <!--=================================
+    footer -->
+    <footer class="footer bg-dark overflow-hidden">
+        <div class="container-fluid p-0">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="p-6">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="index.html"><img class="img-fluid" src="{% static 'assets/frontend/img/logo-light.svg' %}" alt="logo"></a>
+                    <p class="mt-3 text-white">We also know those epic stories</p>
+                  </div>
+                  <div class="col-lg-6">
+                    <h5 class="text-primary">Head office</h5>
+                    <p class="text-white">214 West Arnold St. New York, NY 10002</p>
+                    <p class="text-white"><i class="fab fa-whatsapp me-2 text-primary"></i>+(704) 279-1249</p>
+                    <!-- <p class="text-white"><i class="far fa-envelope me-2 text-primary"></i>letstalk@hisoft.com</p> -->
+                    <h4 class="text-white mb-0 fw-bold"><a class="text-white" href="#">+(704) 279-1249</a></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 bg-light">
+              <div class="p-6">
+                <div class="row">
+                  <div class="col-sm-6 col-lg-5 mb-4 mb-lg-0">
+                    <h5 class="text-primary mb-2 mb-sm-4">IT Services</h5>
+                    <div class="footer-link">
+                      <ul class="list-unstyled mb-0">
+                        <li><a class="text-dark" href="#">Data Synchronization</a></li>
+                        <li><a class="text-dark" href="#">Content Management</a></li>
+                        <li><a class="text-dark" href="#">Content Delivery</a></li>
+                        <li><a class="text-dark" href="#">Transaction Processing</a></li>
+                        <li><a class="text-dark" href="#">Process Automation</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-lg-5">
+                    <h5 class="text-primary mb-2 mb-sm-4">Company</h5>
+                    <div class="footer-link">
+                      <ul class="list-unstyled mb-0">
+                        <li><a class="text-dark" href="#">Event Processing</a></li>
+                        <li><a class="text-dark" href="#">Information Security</a></li>
+                        <li><a class="text-dark" href="#">Mobile Platforms</a></li>
+                        <li><a class="text-dark" href="#">Communications</a></li>
+                        <li><a class="text-dark" href="#">Careers</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <p class="mb-0 text-dark mt-5">©Copyright 2020 <a href="index.html">hi-soft</a> All Rights Reserved</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!--=================================
+      footer -->
+
+    <!--=================================
+    Javascript -->
+
+		<!-- JS Global Compulsory (Do not remove)-->
+		<script src="{% static 'assets/frontend/js/jquery-3.7.0.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/popper/popper.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/bootstrap/bootstrap.min.js' %}"></script>
+
+
+		<!-- Page JS Implementing Plugins (Remove the plugin script here if site does not use that feature)-->
+		<script src="{% static 'assets/frontend/js/jquery.appear.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/swiper/swiper.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/swiperanimation/SwiperAnimation.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/counter/jquery.countTo.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/owl-carousel/owl.carousel.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/jarallax/jarallax.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/jarallax/jarallax-video.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/shuffle/shuffle.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/typer/jquery.typer.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/apexchart/apexcharts.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/apexchart/control-chart-apexcharts.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/nice-select.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/apexchart/apexcharts.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/calendar.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/datatables.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/dataTables.responsive.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/jquery.vmap.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/jquery.vmap.sampledata.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/jquery.vmap.world.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/main.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/range.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/script.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/tag.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/tagging.min.js' %}"></script>
+
+		<script src="{% static 'assets/frontend/js/select2.min.js' %}"></script>
+
+		<!-- Template Scripts (Do not remove)-->
+		<script src="{% static 'assets/frontend/js/custom.js' %}"></script>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        
+    <script src="https://cdn.ckeditor.com/4.10.1/standard/ckeditor.js"></script>
+		
+</body>
+</html>

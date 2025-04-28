@@ -1,0 +1,431 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Signup Page</title>
+ 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+   
+    <style media="screen">
+      *,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #080710;
+}
+.background{
+    width: 430px;
+    height: 520px;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+}
+.background .shape{
+    height: 180px;
+    width: 180px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.shape:first-child{
+    background: linear-gradient(
+        #1845ad,
+        #23a2f6
+    );
+    left: -70px;
+    top: -231px;
+}
+.shape:last-child{
+    background: linear-gradient(
+        to right,
+        #ff512f,
+        #f09819
+    );
+    right: -70px;
+    bottom: -231px;
+}
+form{
+    height: 860px;
+    width: 450px;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+}
+form *{
+    font-family: 'Poppins',sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+form h1{
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+label{
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+input{
+    display: block;
+    height: 40px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 2px;
+    font-size: 14px;
+    font-weight: 300;
+}
+::placeholder{
+    color: #e5e5e5;
+}
+button{
+    margin-top: 14px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.dropdown{
+    
+    min-width: 15em;
+    position: relative;
+    margin: 4px;
+}
+
+.dropdown * {
+    box-sizing: border-box;
+    background-color: #2a2f3b;
+
+}
+
+.select {
+    background: #2a2f3b;
+
+    color: #fff;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border: 2px #0f4ee0;
+
+    border-radius: 0.5em;
+
+    padding: 1em;
+
+    cursor: pointer;
+
+    transition: background 0.3s;
+
+}
+
+.select-clicked {
+    border: 2px #26489a solid;
+
+    box-shadow: 0 0 0.8em #26489a;
+}
+
+.select:hover{
+    background: #323741;
+}
+
+
+.social{
+  margin-top: 30px;
+  display: flex;
+}
+.social div{
+  background: red;
+  width: 150px;
+  border-radius: 3px;
+  padding: 5px 10px 10px 5px;
+  background-color: rgba(255,255,255,0.27);
+  color: #eaf0fb;
+  text-align: center;
+}
+.social div:hover{
+  background-color: rgba(255,255,255,0.47);
+}
+.social .fb{
+  margin-left: 25px;
+}
+.social i{
+  margin-right: 4px;
+}
+
+  </style>
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %} 
+        <h1>SIGNUP HERE</h1>
+
+        <label for="username">Username</label>
+        <input type="text" placeholder="Username" name="username" id="username">
+
+        <label for="email">Email</label>
+        <input type="email" placeholder="Email or Phone" name="email" id="email">
+
+        <label for="password1">Password</label>
+        <input type="password" placeholder="Password" id="password1" name="password1">
+
+
+        <label for="password2">Confrom Password</label>
+        <input type="password" placeholder="Confrom Password" id="password2" name="password2">
+  
+        <label for="location">Current Location</label>
+        <input type="text" placeholder="Enter Your Location" id="location" name="location">
+
+
+        <label for="selecttype"><b>selecttype :</b></label>
+
+        <input type="radio" name="selecttype" value="Donar" required>
+         
+        <label><b>Donar</b></label>
+
+        <input type="radio" name="selecttype" value="NGO" required>
+         
+        <label><b>NGO</b></label>
+
+         
+
+
+        <label for="hotel">Hotel Name</label>
+        <input type="text" placeholder="Enter Your hotel name" id="hotel" name="hotel">
+        <button type="submit">Signup</button>
+        
+        <a >i have already account</a>
+    </form>
+</body>
+</html>
+
+
+
+ -->
+
+
+ <!DOCTYPE html>
+
+ <html lang="en">
+
+    {% load static %}
+
+ <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BNI</title>
+    
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  -->
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.3.0-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'assets/bootstrap-5.3.0-dist/bootstrap.bundle.min.js' %}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="{% static 'assets/js/jquery-3.7.0.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/jquery.validate.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    
+
+</head>
+ <body>
+
+    <!-- <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-1 col-5">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+
+                        <img src="https://bniwesttexas.com/img/album/5f77f019005aaf001b520199.png" alt="" width="100px" height="45px"><span class="pl-1" style="border-right: 2px solid; height: 50px;"></span>
+                        
+                    </div>
+                    <div class="col-md pl-3">
+                        <div style="display: block;">
+                            <h1 style="font-size: 15px;">DHARMAPURI</h1>
+                            <h1 style="font-size: 15px;">KRISHNAGIRI</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md"></div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+    </div> -->
+    
+    <div class='container'>
+
+        <div class="py-5">
+
+            <div class="card px-4" id="card-center">
+                <h1 class="text-center" id="emps">Employee Monthly Details</h1>
+                <form action="" id='myform' autocomplete="off" method="post">
+                    {% csrf_token %}
+
+                    <div class="row ">
+
+                        <div class="col-md py-3">
+
+                            <label for="" class="form-label">Employee Code <span
+                                    style='color:red;align-items:center;'>*</span></label>
+
+                            <input type="number" class="form-control" name="employeecode" id="employeecode"
+                                onkeypress="return onlyNumberKey(event)" placeholder="Enter Employe Code" min="0">
+
+                        </div>
+
+                        <div class="col-md py-3">
+
+                            <label for="" class="form-label">Employee name </label>
+
+                            <input type="text" class="form-control" name="employeename" id="employeename"
+                                placeholder="Enter Employe Name" oninput="capitalizeInput(this)">
+
+
+                        </div>
+
+                        <div class="col-md py-3">
+
+                            <label for="" class="form-label">CTC <span
+                                    style='color:red;align-items:center;'>*</span></label>
+
+                            <input type="number" class="form-control" name="employeectc" id="employeectc"
+                                onkeypress="return onlyNumberKey(event)" placeholder="Enter Employe CTC" min="0">
+
+
+                        </div>
+
+                        <!-- <div class="col-md py-3">
+
+                            <label for="" class="form-label">Effective From Date <span
+                                    style='color:red;align-items:center;'>*</span></label>
+
+                            <input type="date" class="form-control" name="fromdate" id="fromdate"
+                                placeholder="Select From Date" onchange="updateToDateMin()">
+
+
+                        </div> -->
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- <div class="col-md-3 py-3">
+
+                            <label for="" class="form-label">Effective to Date <span
+                                    style='color:red;align-items:center;'>*</span></label>
+
+                            <input type="date" class="form-control" name="todate" id="todate"
+                                placeholder="Select To Date">
+
+
+                        </div> -->
+
+                        <div class="col-md-3 py-3">
+
+                            <label for="" class="form-label">Living City <span
+                                    style='color:red;align-items:center;'>*</span></label>
+
+                            <input type="text" class="form-control" name="livingcity" id="livingcity"
+                                placeholder="Enter Living City" oninput="capitalizeInput(this)">
+
+
+                        </div>
+
+                        <div class="col-md-3 py-3">
+
+                            <label for="" class="form-label">place <span
+                                    style='color:red;align-items:center;'>*</span></label>
+
+                            <input type="text" class="form-control" name="place" id="place"
+                                placeholder="Enter The Place" oninput="capitalizeInput(this)">
+
+                        </div>
+
+                        
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md text-start py-3">
+
+                            <input type="button" class="btn btn-primary text-start" value="Add" id="btn1">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row ">
+
+
+                        <div class="col-md py-3" style="text-align: end;">
+
+                            <input type="submit" class="btn btn-success" style="text-align: end;" value="Submit" id="btn2" >
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    <script src="{% static 'assets/js/main.js' %}"></script>
+ </body>
+
+ </html>

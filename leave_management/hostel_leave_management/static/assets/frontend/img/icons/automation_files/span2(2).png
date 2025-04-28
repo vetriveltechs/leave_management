@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		
+<!-- SEO -->
+		<title></title>
+		<meta name="page_title" content=""/>
+		<meta name="Title" content=""/>
+		<meta name="description" content=""/>
+		<meta name="keywords" content=""/>
+		<meta name="author" content="Aideanex ">
+		<meta name="robots" content="index, follow">
+		<meta name="revisit-after" content="2 days">
+		<link rel="canonical" href="" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta name="og_title" content=""/>
+		<meta name="og_description" content=""/>
+		<meta name="og_url" content=""/>
+		<meta name="og_sitename" content=""/>
+				<meta property="og:image" content=" " />
+				
+					<!-- SEO -->
+		<link rel="icon" type="image/png" href="https://jesperx-ai.jespersoft.com/uploads/favicon.png" type="image/x-icon">
+	
+		
+		
+     <!--=====CSS=======-->
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/fontawesome.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/magnific-popup.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/nice-select.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/slick-slider.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/owl.carousel.min.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/aos.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/mobile-menu.css">
+     <link rel="stylesheet" href="https://jesperx-ai.jespersoft.com/assets/frontend/css/main.css">
+
+
+
+     <!--=====JQUERY=======-->
+     <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/jquery-3-7-1.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" 
+		async defer></script>
+		<!-- theme JS files -->
+		<link href="https://jesperx-ai.jespersoft.com/assets/backend/toastr/toastr.css" type="text/css"  rel="stylesheet" />
+		<script src="https://jesperx-ai.jespersoft.com/assets/backend/toastr/toastr.js"></script>
+		<style>
+			.content
+			{
+				padding: 1.25rem 1.25rem;
+				-ms-flex-positive: 1;
+				flex-grow: 1;
+			}
+			
+			*, ::after, ::before {
+				box-sizing: border-box;
+			}
+
+		
+		</style>
+	</head>
+	<!--=====HEADER START=======-->
+<header>
+    <div class="header-area header-area2 header-area-all d-none d-lg-block" id="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="header-elements">
+            <div class="site-logo" style="max-width:210px;">
+              <a href="https://jesperx-ai.jespersoft.com/home.html">
+                <img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/logo/Jesperx-light-logo.png" alt="">
+              </a>
+            </div>
+
+            <div class="main-menu-ex main-menu-ex1">
+              <ul>
+                <li><a href="https://jesperx-ai.jespersoft.com/home.html">Home </a> </li>
+                <li class="dropdown-menu-parrent"><a href="javascript:void(0);">Solutions <i class="fa-solid fa-angle-down"></i></a>
+                                      <ul>
+                                              <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/HRMS-PLATFORM-WITH-AI-CAPABILITIES">HRMS Platform with AI Capabilities</a></li>
+                                              <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/AI-AGENT-FOR-THE-BPE-INDUSTRY">AI Agent for the BPE Industry</a></li>
+                                              <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/DATA-TAMPER-IDENTIFICATION-USING-AI">Data Tamper Identification Using AI</a></li>
+                                              <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/PROCESS-AUTOMATION-USING-ORACLE-ERP-AI-SOLUTIONS">Process Automation Using Oracle ERP AI Solutions</a></li>
+                                          </ul>
+                  
+                </li>
+                <li><a href="https://jesperx-ai.jespersoft.com/company.html">Company </a></li>
+                <li class="dropdown-menu-parrent"><a href="javascript:void(0);">Insights <i class="fa-solid fa-angle-down"></i></a>
+                  <ul>
+                    <li><a href="https://jesperx-ai.jespersoft.com/thought-leadership.html">Thought Leadership</a></li>
+                    <li><a href="https://jesperx-ai.jespersoft.com/blogs.html">Blogs</a></li>
+                    <li><a href="https://jesperx-ai.jespersoft.com/case-studies.html">Case Studies</a></li>
+
+
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div class="header2-buttons">
+              <div class="contact-3 d-lg-block d-none">
+                <div class="consulting2">
+                  <div class="search-icon header__search header-search-btn">
+                    <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- header search start -->
+              <div class="header-search-form-wrapper">
+                <div class="tx-search-close tx-close"><i class="fa-solid fa-xmark"></i></div>
+                <div class="header-search-container">
+                  <form role="search" class="search-form">
+                    <input type="search" class="search-field" placeholder="Search …" value="" name="s">
+                    <button type="submit" class="search-submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                  </form>
+                </div>
+              </div>
+              <!-- header search end -->
+              <div class="body-overlay"></div>
+              <!-- slide bar end -->
+
+
+              <div class="button">
+                <a class="theme-btn8" href="https://jesperx-ai.jespersoft.com/contact-us.html">Contact Us <span class="arrow3"><i class="fa-solid fa-arrow-right"></i></span></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!--=====HEADER END=======-->
+
+<!--=====Mobile header start=======-->
+<div class="mobile-header mobile-header-main d-block d-lg-none ">
+  <div class="container-fluid">
+    <div class="col-12">
+      <div class="mobile-header-elements">
+        <div class="mobile-logo">
+          <a href="https://jesperx-ai.jespersoft.com/home.html"><img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/logo/Jesperx-light-logo.png" alt=""></a>
+        </div>
+        <div class="mobile-nav-icon">
+          <i class="fa-duotone fa-bars-staggered"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-sidebar d-block d-lg-none">
+  <div class="logo-m">
+    <a href="https://jesperx-ai.jespersoft.com/home.html"><img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/logo/Jesperx-light-logo.png" alt=""></a>
+  </div>
+  <div class="menu-close">
+    <i class="fa-solid fa-xmark"></i>
+  </div>
+  <div class="mobile-nav">
+
+    <ul>
+      <li><a href="https://jesperx-ai.jespersoft.com/home.html">Home </a> </li>
+      <li>
+          <a href="https://jesperx-ai.jespersoft.com/solutions.html">Solutions </a> 
+
+                          <ul class="sub-menu">
+                                      <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/HRMS-PLATFORM-WITH-AI-CAPABILITIES">HRMS Platform with AI Capabilities</a></li>
+                                      <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/AI-AGENT-FOR-THE-BPE-INDUSTRY">AI Agent for the BPE Industry</a></li>
+                                      <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/DATA-TAMPER-IDENTIFICATION-USING-AI">Data Tamper Identification Using AI</a></li>
+                                      <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/PROCESS-AUTOMATION-USING-ORACLE-ERP-AI-SOLUTIONS">Process Automation Using Oracle ERP AI Solutions</a></li>
+                                  </ul>
+                        
+      </li>
+      <li><a href="https://jesperx-ai.jespersoft.com/company.html">Company </a></li>
+      <li><a href="https://jesperx-ai.jespersoft.com/insights.html">Insights </a>
+        <ul class="sub-menu">
+          
+          <li><a href="https://jesperx-ai.jespersoft.com/thought-leadership.html">Thought Leadership</a></li>
+          <li><a href="https://jesperx-ai.jespersoft.com/blogs.html">Blogs</a></li>
+          <li><a href="https://jesperx-ai.jespersoft.com/case-studies.html">Case Studies</a></li>
+
+        </ul>
+      </li>
+    </ul>
+
+    <div class="mobile-button">
+      <a class="theme-btn2" href="https://jesperx-ai.jespersoft.com/contact-us.html">Contact Us<span><i class="fa-solid fa-arrow-right"></i></span></a>
+    </div>
+
+    <div class="single-footer-items">
+      <h3>Our Details</h3>
+
+      <div class="contact-box">
+        <div class="icon">
+          <img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/icons/footer1-icon2.png" alt="">
+        </div>
+        <div class="pera">
+          <a href="tel:91 9900017401">91 9900017401</a>
+        </div>
+      </div>
+
+      <div class="contact-box">
+        <div class="icon">
+          <img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/icons/footer1-icon3.png" alt="">
+        </div>
+        <div class="pera">
+          <a href="mailto:sales@jesperapps.com">sales@jesperapps.com</a>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="contact-infos">
+    <ul class="social-icon">
+      <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+      <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
+      <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+      <li><a href=""><i class="fa-brands fa-instagram"></i></a></li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<!--=====Mobile header end=======--><!-- <body class="grocino-home home2">	
+<div class="grocino-home home2">
+    <main class="bg_gray1">
+    <div id="error_page">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-xl-7 col-lg-9 margin_60 mt-5 pt-5">
+                    <figure class="error-figure mt-5"><img src="https://jesperx-ai.jespersoft.com/uploads/404.png" alt="" class="img-fluid" width="550" height="234"></figure>
+                    <p class="error-message-page pb-5">We're sorry, but the page you were looking for doesn't exist.</p>
+                </div>
+            </div>
+        </div>
+    </div>	
+</main>
+</div>
+</div> -->
+<style>
+.ro {
+    background: #fff;
+    z-index: 99999;
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+}
+.ro h1 {
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 30%;
+}
+.ro p {
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: 30%;
+    padding-top:10px;
+}
+p.backtohome {
+    margin: 0 auto;
+    margin-top: 10px!important;
+    text-align: center;
+    position: relative;
+    top: 30%;
+    padding: 10px;
+    background: #ff2b2b;
+    /* float: left; */
+    width: 10%;
+    color: #fff;
+    border-radius: 4px;
+}
+p.backtohome:hover {
+    margin: 0 auto;
+    margin-top: 10px!important;
+    text-align: center;
+    position: relative;
+    top: 30%;
+    padding: 10px;
+    background: #ff3f3f;
+    /* float: left; */
+    width: 10%;
+    color: #fff;
+    border-radius: 4px;
+}
+@media only screen and (max-width: 1200px) {
+    p.backtohome {
+    width: 35%;
+  }
+}
+
+</style>
+
+<div class="col-md-12">
+        <div class="ro">
+        <h1>404 Page Not Found</h1>
+        <p>The requested page could not be found.</p>
+        <a href="https://jesperx-ai.jespersoft.com/" title="back to home"><p class="backtohome"> Back to Home</p></a>
+    </div>
+</div>
+   <!--===== FOOTER AREA START =======-->
+
+   <div class="footer2 _relative">
+                  <div class="container">
+                       <div class="row">
+                            <div class="col-lg-4 col-md-6 col-12">
+                                 <div class="single-footer-items footer-logo-area">
+                                      <div class="footer-logo">
+                                        <a href="https://jesperx-ai.jespersoft.com/home.html"><img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/logo/Jesperx-light-logo.png" alt=""></a>
+                                      </div>
+                                      <div class="space20"></div>
+                                      <div class="heading2">
+                                        <p>Combining innovation with expertise at JesperX.ai, we deliver AI solutions that are precisely tailored to help your business succeed in an ever-evolving technological landscape. </p>
+                                      </div>
+                                      <ul class="social-icon">
+                                           <li><a href="javascript:void(0);"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                                           <li><a href="javascript:void(0);"><i class="fa-brands fa-x-twitter"></i></a></li>
+                                           <li><a href="javascript:void(0);"><i class="fa-brands fa-youtube"></i></a></li>
+                                           <li><a href="javascript:void(0);"><i class="fa-brands fa-instagram"></i></a></li>
+                                      </ul>
+                                 </div>
+                            </div>
+        
+                            <div class="col-lg col-md-6 col-12">
+                                 <div class="single-footer-items">
+                                      <h3>Solutions</h3>
+                                                                                        <ul class="menu-list">
+                                                                                                    <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/HRMS-PLATFORM-WITH-AI-CAPABILITIES">HRMS Platform with AI Capabilities</a></li>
+                                                                                                    <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/AI-AGENT-FOR-THE-BPE-INDUSTRY">AI Agent for the BPE Industry</a></li>
+                                                                                                    <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/DATA-TAMPER-IDENTIFICATION-USING-AI">Data Tamper Identification Using AI</a></li>
+                                                                                                    <li><a href="https://jesperx-ai.jespersoft.com/solutions.html/PROCESS-AUTOMATION-USING-ORACLE-ERP-AI-SOLUTIONS">Process Automation Using Oracle ERP AI Solutions</a></li>
+                                                                                                    </ul>
+                                                                                   
+                                 </div>
+                            </div>
+        
+                            <div class="col-lg col-md-6 col-12">
+                                 <div class="single-footer-items pl-5">
+                                      <h3>Useful Links</h3>
+        
+                                      <ul class="menu-list">
+                                        <li><a href="https://jesperx-ai.jespersoft.com/company.html">Company </a></li>
+                                       <li><a href="https://jesperx-ai.jespersoft.com/blogs.html">Blogs</a></li>
+                                       <li><a href="https://jesperx-ai.jespersoft.com/case-studies.html">Case Studies</a></li>
+                                       <li><a href="https://jesperx-ai.jespersoft.com/contact-us.html">Contact Us </a></li>
+                                      </ul>
+                                 </div>
+                            </div>
+        
+        
+                            <div class="col-lg-3 col-md-6 col-12">
+                                 <div class="single-footer-items">
+                                      <h3>Contact Us</h3>
+                                        <div class="contact-box">
+                                      <div class="icon">
+                                      <img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/icons/contact-page-icon3.png" alt="" style="height: 30px; width:80px;">
+                                      </div>
+                                      <div class="space20"></div>
+                                      <div class="heading2">
+                                        <p>Door No. 4/C KM Towers, Second Floor, Vasanth Nagar, Krishnagiri Bypass Road, Hosur - 635109</p>
+                                      </div>
+                                      </div>
+
+                                      <div class="contact-box">
+                                        <div class="icon">
+                                          <img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/icons/footer1-icon1.png" alt="">
+                                        </div>
+                                        <div class="pera">
+                                          <a href="tel:9900017401">+91 9900017401</a>
+                                        </div>
+                                      </div>
+
+                                      <div class="contact-box">
+                                        <div class="icon">
+                                          <img src="https://jesperx-ai.jespersoft.com/assets/frontend/img/icons/footer1-icon3.png" alt="">
+                                        </div>
+                                        <div class="pera">
+                                          <a href="mailto:sales@jesperapps.com">sales@jesperapps.com</a>
+                                        </div>
+                                      </div>
+
+                                 </div>
+                            </div>
+        
+                       </div>
+        
+                       <div class="space70"></div>
+                  </div>
+
+                  <div class="copyright-area _relative">
+                    <div class="container">
+                      <div class="row align-items-center">
+                        <div class="col-md-5">
+                             <div class="coppyright">
+                               <p>Copyright @2025 Jesperx.ai All Rights Reserved</p>
+                             </div>
+                        </div>
+                        <div class="col-md-7">
+                             <div class="coppyright right-area">
+                                  <a href="javascript:void(0);">Terms & Conditions</a>
+                                  <a href="javascript:void(0);">Privacy Policy</a>
+                             </div>
+                        </div>
+                   </div>
+                    </div>
+
+                    <a href="javascript:void(0);" class="arrow-up"><i class="fa-solid fa-arrow-up"></i></a>
+               </div>
+      
+                </div>
+        
+                <!--===== FOOTER AREA END =======-->		
+		
+	</html>
+
+	<link href="https://jesperx-ai.jespersoft.com/assets/frontend/css/jquery-ui.css" rel="stylesheet">
+	<script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/jquery-ui.js"></script>
+	<script src="https://jesperx-ai.jespersoft.com/assets/backend/toastr/sweetalert2@11.js"></script>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+	<script>
+    function validateNumber(input) {
+        input.value = input.value.replace(/\D/g, '');
+    }
+    $(document).ready(function() {
+        // Sanitize spaces for input and textarea fields
+        $('input[type="text"], input[type="search"], input[type="email"],input[type="number"], textarea').on('input', function() {
+            let value = $(this).val();
+
+            // Remove leading spaces only
+            value = value.replace(/^\s+/g, '');
+
+            // Replace multiple consecutive spaces with a single space
+            value = value.replace(/\s+/g, ' ');
+
+            // Set the sanitized value back to the field
+            $(this).val(value);
+        });
+
+        // Apply sanitization for CKEditor content
+        if (typeof CKEDITOR !== 'undefined') {
+            CKEDITOR.on('instanceReady', function(event) {
+                const editorInstance = event.editor;
+
+                // Listen for changes in CKEditor content
+                editorInstance.on('change', function() {
+                    let content = editorInstance.getData();
+
+                    // Remove initial spaces
+                    content = content.replace(/^\s+/g, '');
+
+                    // Replace multiple consecutive spaces with a single space
+                    content = content.replace(/\s{2,}/g, ' ');
+
+                    // Update the cleaned content back to CKEditor without moving the cursor
+                    editorInstance.setData(content, function() {
+                        editorInstance.updateElement();  // Ensures textarea reflects changes
+                    });
+                });
+            });
+        }
+    });
+
+    document.getElementById("mainCaptcha").addEventListener("copy", function (e) {
+        e.preventDefault();
+     
+    });
+
+    document.getElementById("client_mainCaptcha").addEventListener("copy", function (e) {
+        e.preventDefault();
+     
+    });
+
+    document.getElementById("captchaLetter").addEventListener("copy", function (e) {
+        e.preventDefault();
+     
+    });
+    </script>    
+
+
+	<script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/bootstrap.min.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/aos.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/fontawesome.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/jquery.countup.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/mobile-menu.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/jquery.magnific-popup.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/owl.carousel.min.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/slick-slider.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/gsap.min.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/ScrollTrigger.min.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/Splitetext.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/text-animation.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/SmoothScroll.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/jquery.lineProgressbar.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/ripple-btn.js"></script>
+        <script src="https://jesperx-ai.jespersoft.com/assets/frontend/js/main.js"></script>
+<!-- Tostr success & Error message start -->
+<style>.swal-wide{
+    width:850px !important;
+}</style>
+<script type="text/javascript">
+		//Scroll Top Starts
+	var btn = $('#scroll-top');
+
+	$(window).scroll(function() {
+	if ($(window).scrollTop() > 300) {
+		btn.addClass('show');
+	} else {
+		btn.removeClass('show');
+	}
+	});
+
+	btn.on('click', function(e) {
+	e.preventDefault();
+	$('html, body').animate({scrollTop:0}, '300');
+	});
+	//Scroll Top End
+
+	$(function()
+	{
+		$('.mobile_vali').keyup(function()
+		{
+			var yourInput = $(this).val();
+			re = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/a-zA-Z]/gi;
+			var isSplChar = re.test(yourInput);
+			if(isSplChar)
+			{
+				var no_spl_char = yourInput.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/a-zA-Z]/gi, '');
+				$(this).val(no_spl_char);
+			}
+		});
+	});
+
+	
+</script>
+
+<script>
+	$(document).ready(function()
+	{ 
+		// Initialize select2
+		$(".searchDropdown").select2();
+		// Read selected option
+		/* $('#but_read').click(function(){
+			var username = $('#selUser option:selected').text();
+			var userid = $('#selUser').val();
+			$('#result').html("id : " + userid + ", name : " + username);
+		}); */
+		
+		//$(".searchDropdown").empty();
+		//$(".searchDropdown").select2("val", "");
+	});
+</script>
+
+<!-- <a href="https://api.whatsapp.com/send?phone=919361226692&text=Thanks%20for%20contacting%20us.%20We%20will%20get%20back%20to%20you%20soon!" class="float" target="_blank">
+  <i class="fa fa-whatsapp" style="margin-top:15px;"></i>
+</a> -->
+
+
+
+
+<style>
+	.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:88px;
+	right:23px;
+	background-color:#25d366;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  	font-size:30px;
+	box-shadow: 2px 2px 3px #999;
+    z-index:100;
+}
+
+.my-float{
+	margin-top:16px;
+}
+</style>
