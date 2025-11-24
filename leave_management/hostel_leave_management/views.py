@@ -1,447 +1,445 @@
-from rest_framework import viewsets
+from rest_framework import viewsets,mixins,status,parsers
 from rest_framework.response import Response
-from hostel_leave_management.modelsFiles import department_models
 from utils.utils import get_current_datetime,get_current_date_str
-from .modelsFiles.common_model import lov
+from .modelsFiles.common_model import *
 from utils.db import execute_sql
 from hostel_leave_management.modelsFiles import designation_models
 from django.shortcuts import render,get_object_or_404, redirect
 import sys
 import os
 import csv
-from django.http import HttpResponse
-from .modelsFiles.department_models import *
-from .modelsFiles.designation_models import *
+from django.http import HttpResponse,JsonResponse,Http404
 from .models import *
-from .serializers import DepartmentSerializer
+from .serializers import *
 from django.views import View
 from django.core.paginator import Paginator
+from django.db.models import Count,F
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import mimetypes
+from base64 import b64encode
+from django.contrib import messages
+from django.utils import timezone
+import hashlib
+from rest_framework.decorators import action,api_view
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.views.decorators.csrf import csrf_exempt
+import json
+from pathlib import Path
+from django.contrib.auth import authenticate, login as auth_login,logout
+from django.contrib.auth.decorators import login_required
 
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Create your views here.
 
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=email, password=password)
+
+        if user:
+            auth_login(request, user)
+
+            # fetch profile
+            try:
+                profile = user.profile
+            except:
+                profile = None
+
+            # fetch roles
+            lines = user.lines.filter(active_flag='Y').select_related('role')
+
+            roles = []
+            for line in lines:
+                if line.role:
+                    roles.append({
+                        'role_id': line.role.id,
+                        'role_name': line.role.role_name
+                    })
+
+            # store in session
+            request.session['logged_user'] = {
+                'user_id': user.id,
+                'user_name': user.username,
+                'roles': roles
+            }
+
+            next_url = request.GET.get('next')
+
+            if next_url:
+                return redirect(next_url)
+
+            return redirect('dashboard')
+
+        return render(request, 'backend/login/login.html', {'error': 'Invalid Email / Password'})
+
+    return render(request, 'backend/login/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def dashboard(request):
     return render(request, 'backend/admin/dashboard.html')
 
+def login(request):
 
-# def manage_departments(request, action=None, id=None):
-#     page_title = 'Departments'
-#     if action == 'add':
+    return render(request, 'backend/login/login.html')
 
-#         if request.method == 'POST':
-
-#             department = Department(
-#                 department_name = request.POST.get('department_name'),
-#                 description     = request.POST.get('description')
-#             )
-#             department.save()
-
-#             return redirect('list_departments')
-
-#         return render(request, 'backend/department/department.html', {'action': 'add'})
-
-#     elif (action == 'edit' or action == 'view') and id:
-#         if request.method == 'POST':
-
-#             Department.objects.filter(id=id).update(
-#                 department_name   = request.POST.get('department_name'),
-#                 description       = request.POST.get('description')
-#             )
-
-#             return redirect('list_departments')
-
-#         department = Department.objects.get(id=id)
-
-#         return render(request, 'backend/department/department.html', {'action': action, 'data': department})
-
-
-#     elif action == 'status' and id:
-#         status = request.GET.get('status')  # 'Y' or 'N'
-#         date_time = get_current_datetime()
-
-#         Department.objects.update_or_create(
-#             id=id,
-#             defaults={
-#                 'active_flag': status,  # Corrected the typo here
-#             }
-#         )
-#         return redirect(request.META.get('HTTP_REFERER', 'list_departments'))
-
-#     elif action == 'import':
-
-#         if request.method == 'POST':
-
-#             if request.method == 'POST' and request.FILES.get("csv"):
-#                 csv_file = request.FILES["csv"]
-
-#                 if csv_file.size > 0:
-#                     decoded_file = csv_file.read().decode("utf-8").splitlines()
-#                     reader = csv.reader(decoded_file)
-#                     next(reader)  # Skip header row
-
-#                     for row in reader:
-#                         department_name = row[0].strip() if len(row) > 0 else None
-#                         description = row[1].strip() if len(row) > 1 else None
-
-#                         Department.objects.update_or_create(
-#                             department_name=department_name,
-#                             defaults={'description': description}
-#                         )
-
-#                 return redirect("list_departments")
-
-#             return redirect('list_departments')
-
-#         return redirect('list_departments')
-
-#     else:
-#         list_name = 'ACTIVESTATUS'
-#         activeFlag = lov(list_name)  # Assuming this fetches some options
-
-#         department_name = request.GET.get('department_name', '')
-#         active_flag = request.GET.get('active_flag', '')
-#         export = request.GET.get('export', '')
-#         page = int(request.GET.get('page', 1))
-#         limit = int(request.GET.get('limit', 10))
-#         offset = (page - 1) * limit
-
-#         # Using Django ORM for counting rows
-#         filter_conditions = {}
-#         if department_name:
-#             filter_conditions['department_name__icontains'] = department_name
-#         if active_flag:
-#             filter_conditions['active_flag'] = active_flag
-
-#         total_rows = Department.objects.filter(**filter_conditions).count()
-
-#         # Using Django ORM for fetching data
-#         departments = Department.objects.filter(**filter_conditions) \
-#             .values('id','department_name', 'description', 'active_flag') \
-#             .order_by('department_name') \
-#             .all()[offset:offset + limit]
-
-#         if export:
-#             # Prepare CSV export
-#             date_str = get_current_date_str()
-#             response = HttpResponse(content_type='text/csv')
-#             response['Content-Disposition'] = f'attachment; filename="Departments_{date_str}.csv"'
-#             response['Pragma'] = 'no-cache'
-#             response['Expires'] = '0'
-
-#             writer = csv.writer(response)
-#             writer.writerow(['S.No', 'Department Name', 'Description', 'Active Status'])
-
-#             for idx, row in enumerate(departments, start=1):
-#                 writer.writerow([idx, row['department_name'], row['description'], row['active_flag']])
-
-#             return response
-
-#         # Pagination logic
-#         starting = offset + 1 if total_rows > 0 else 0
-#         ending = offset + len(departments)
-#         total_pages = (total_rows + limit - 1) // limit
-#         pagination = range(1, total_pages + 1)
-
-#         return render(request, 'backend/department/department.html', {
-#             'page_title': 'Department List',
-#             'departments': departments,
-#             'activeFlag': activeFlag,
-#             'department_name': department_name,
-#             'active_flag': active_flag,
-#             'starting': starting,
-#             'ending': ending,
-#             'totalRows': total_rows,
-#             'pagination': pagination,
-#             'current_page': page,
-#             'limit': limit,
-#             'limit_options': [10, 20, 50, 100],
-#         })
-
-class DepartmentImportView(View):
-    def get(self, request):
-        # Render the form for uploading the CSV file
-        return render(request, 'backend/department/import.html')
-
-    def post(self, request):
-        csv_file = request.FILES['csv_file']
-
-        if not csv_file.name.endswith('.csv'):
-            # If the uploaded file is not a CSV
-            return HttpResponse("Invalid file format. Please upload a CSV file.")
-
-        decoded_file = csv_file.read().decode('utf-8').splitlines()
-        reader = csv.reader(decoded_file)
-
-        # Skip the header row
-        next(reader)
-
-        for row in reader:
-            department_name, description, active_flag = row
-
-            # Create or update department using the serializer
-            department_data = {
-                'department_name': department_name,
-                'description': description,
-                'active_flag': active_flag
-            }
-
-            # Use the serializer to save or update department
-            serializer = DepartmentSerializer(data=department_data)
-
-            if serializer.is_valid():
-                # Check if department already exists by name (or other unique field)
-                department, created = Department.objects.get_or_create(
-                    department_name=department_name,
-                    defaults=department_data
-                )
-                # No need to keep track of created/updated count anymore
-            else:
-                # Handle invalid data, if needed
-                continue
-
-        # Redirect or render a simple success message
-        return HttpResponse("Departments have been successfully imported.")
-
-class DepartmentListView(View):
-    def get(self, request):
-        department_name = request.GET.get('department_name', '').strip()
-        active_flag = request.GET.get('active_flag', '')
-        limit = request.GET.get('limit', 10)
-        page = request.GET.get('page', 1)
-        export = request.GET.get('export', None)
-
-        departments = Department.objects.all()
-
-        if department_name:
-            departments = departments.filter(department_name__icontains=department_name)
-
-        if active_flag:
-            departments = departments.filter(active_flag=active_flag)
-
-        # 🛑 Fix: Check export first
-        if export:
-            return self.export_departments(departments)
-
-        # Pagination (only if not exporting)
-        totalRows = departments.count()
-
-        paginator = Paginator(departments, limit)
+@csrf_exempt
+def getLineActiveStatus(request):
+    """
+    Endpoint: /admin/getLineActiveStatus
+    Returns available active statuses for line level dropdown.
+    """
+    if request.method == "GET":
+        print("getLineActiveStatus")
         try:
-            departments_page = paginator.page(page)
-        except:
-            departments_page = paginator.page(1)
+            activeFlag = lovList('ACTIVESTATUS')
 
-        starting = departments_page.start_index()
-        ending = departments_page.end_index()
+            # Example fallback if DB returns empty
+            if not activeFlag:
+                activeFlag = [
+                    {"list_value": "Y", "list_code": "Active"},
+                    {"list_value": "N", "list_code": "Inactive"},
+                ]
 
-        pagination = paginator.page_range
-
-        list_name = 'ACTIVESTATUS'
-        active_flag_list = lov(list_name)
-
-        context = {
-            'page_title': 'Department Management',
-            'departments': departments_page,
-            'department_name': department_name,
-            'active_flag': active_flag,
-            'starting': starting,
-            'ending': ending,
-            'totalRows': totalRows,
-            'current_page': int(page),
-            'pagination': pagination,
-            'limit': int(limit),
-            'limit_options': [10, 20, 50, 100],
-            'activeFlag': active_flag_list,
-        }
-
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            return render(request, 'backend/department/department_list_partial.html', context)
-        else:
-            return render(request, 'backend/department/department.html', context)
-
-    def export_departments(self, departments):
+            return JsonResponse({"activeStatus": activeFlag})
+        except Exception as e:
+            print("Error in getLineActiveStatus:", e)  # logs in console
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        print("Invalid request method")
+        return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="departments.csv"'
+class DesignationViewSet(viewsets.ModelViewSet):
+    queryset = Designation.objects.all()
+    serializer_class = DesignationSerializer
+    
+    @action(
+        detail=False,
+        methods=['post'],
+        url_path='import',
+        parser_classes=[MultiPartParser, FormParser]  # 👈 accept file upload
+    )
+    def import_file(self, request, *args, **kwargs):
+        serializer = DesignationImportSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+        return Response(result, status=status.HTTP_201_CREATED)
 
-        writer = csv.writer(response)
-        writer.writerow(['S.No', 'Department Name', 'Description', 'Active Status'])
+# Regular view to show the form
 
-        for index, dept in enumerate(departments, start=1):
-            active_status = "Yes" if dept.active_flag == 'Y' else "No"  # Check the active flag
-            writer.writerow([index, dept.department_name, dept.description, active_status])
+@login_required(login_url='login')
+def designation_form_view(request):
+    queryset = Designation.objects.all()
+    activeFlag = lovList('ACTIVESTATUS')
+    
+    context= {
+        'designations': queryset,
+        'activeFlag':activeFlag
+    }
+    return render(request, 'backend/designation/designation.html', context)
 
-        return response
 
-class DepartmentCreateView(View):
-    def get(self, request):
-        context = {
-            'action': 'add',
-            'page_title': 'Create Department'
-        }
-        return render(request, 'backend/department/department.html', context)
 
-    def post(self, request):
-        serializer = DepartmentSerializer(data=request.POST)
-        if serializer.is_valid():
-            department = serializer.save()
-            return redirect('edit_view_department', pk=department.pk)
-        else:
-            context = {
-                'action': 'add',
-                'errors': serializer.errors,
-                'page_title': 'Create Department'
-            }
-            return render(request, 'backend/department/department.html', context)
+class DepartmentViewSet(viewsets.ModelViewSet):
+    queryset = Department.objects.all().order_by('-id')
+    serializer_class = DepartmentSerializer
 
-class DepartmentEditView(View):
-    def get(self, request, pk):
-        department = get_object_or_404(Department, pk=pk)
-        context = {
-            'action': 'edit',
-            'department': department,
-            'page_title': f'Edit Department: {department.department_name}'
-        }
-        return render(request, 'backend/department/department.html', context)
 
-    def post(self, request, pk):
-        department = get_object_or_404(Department, pk=pk)
-        serializer = DepartmentSerializer(department, data=request.POST)
-        if serializer.is_valid():
-            serializer.save()
-            return redirect('edit_view_department', pk=pk)
-        else:
-            context = {
-                'action': 'edit',
-                'department': department,
-                'errors': serializer.errors
-            }
-            return render(request, 'backend/department/department.html', context)
+@login_required(login_url='login')
+def department_form_view(request):
+    queryset = Department.objects.all()
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'departments': queryset,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/department/department.html', context)
 
-class DepartmentStatusUpdateView(View):
-    def get(self, request, pk):
-        department = get_object_or_404(Department, pk=pk)
+class RolesViewSet(viewsets.ModelViewSet):
+    queryset = Roles.objects.all()
+    serializer_class = RolesSerializer
 
-        # Toggle the active status
-        department.active_flag = 'N' if department.active_flag == 'Y' else 'Y'
+@login_required(login_url='login')
+def roles_form_view(request):
+    queryset = Roles.objects.all()
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'roles': queryset,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/roles/roles.html', context)
 
-        # Save the department object after updating its status
-        department.save()
 
-        # Redirect back to the list of departments
-        return redirect('list_departments')
+class LovViewSet(viewsets.ModelViewSet):
+    queryset =  Lov.objects.all().annotate(values_count=Count('listtypevalues'))
+    serializer_class = LovSerializer
 
+@login_required(login_url='login')
+def lov_view(request):
+    queryset = Lov.objects.all().annotate(values_count=Count('listtypevalues'))
+    activeFlag = lovList('ACTIVESTATUS')
+    
+    context= {
+        'lov': queryset,
+        'activeFlag':activeFlag
+    }
+    return render(request, 'backend/lov/lov.html', context)
+
+
+class ListTypeValuesViewSet(viewsets.ModelViewSet):
+    queryset = ListTypeValues.objects.all()
+    serializer_class = ListTypeValuesSerializer
+
+@login_required(login_url='login')
+def list_type_values_list_view(request, lov_id):
+    """
+    HTML view for normal page load,
+    JSON response if requested via AJAX.
+    """
+    lov = get_object_or_404(Lov, pk=lov_id)
+    qs = ListTypeValues.objects.filter(list_type_id=lov_id)
+
+    # If AJAX or JSON request -> return JSON
+    if request.headers.get("x-requested-with") == "XMLHttpRequest" or \
+       "application/json" in request.headers.get("Accept", ""):
+        serializer = ListTypeValuesSerializer(qs, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    # Otherwise render template for normal request
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'lov': lov,
+        'list_type': qs,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/lov/listTypeValues.html', context)
+    
+@login_required(login_url='login')
+def project_list(request):
+    
+    # user_id = request.session.get('user_id')
+    
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/projects/projects.html', context)
+
+class ProjectsHeaderViewSet(viewsets.ModelViewSet):
+    queryset = ProjectsHeader.objects.all()
+    serializer_class = ProjectsHeaderSerializer
+
+    @action(detail=True, methods=['patch'])
+    def toggle_status(self, request, pk=None):
+        project = self.get_object()
+        project.active_flag = request.data.get('active_flag', project.active_flag)
+        project.save()
+        return Response({'status': 'success'})
+@login_required(login_url='login')  
+@csrf_exempt
+def update_line_status(request):
+    if request.method == 'POST':
+        try:
+            data = request.POST or json.loads(request.body)  # handle both form and JSON
+            line_id = data.get('id')
+            active_flag = data.get('active_flag')
+
+            if not line_id:
+                return JsonResponse({"error": "Line ID is required"}, status=400)
+
+            line = ProjectsLine.objects.get(id=line_id)
+            line.active_flag = active_flag
+            line.save()
+            return JsonResponse({"success": True})
+
+        except ProjectsLine.DoesNotExist:
+            return JsonResponse({"error": "Line not found"}, status=404)
+        except Exception as e:
+            print(e)
+            return JsonResponse({"error": "Something went wrong"}, status=500)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+@login_required(login_url='login')
 def manageSetups(request):
     page_title = 'Setups'
 
     return render(request, 'backend/setups/setups.html', {'page_title': page_title})
 
+class BloodGroupViewSet(viewsets.ModelViewSet):
+    queryset = BloodGroup.objects.all().order_by('-id')
+    serializer_class = BloodGroupSerializer
 
-def manageDesignation(request, action=None, id=None):
-    page_title = 'Designation'
-    if action == 'add':
-
-        if request.method == 'POST':
-
-            designation_name    = request.POST.get('designation_name')
-            description         = request.POST.get('description')
-
-            query = designation_models.insert_designation()
-            execute_sql(query, [designation_name, description])
-            return redirect('list_designations')
-
-        return render(request, 'backend/designation/designation.html', {'action': 'add'})
-
-    elif (action == 'edit' or action == 'view') and id:
-        if request.method == 'POST':
-            designation_name = request.POST.get('designation_name')
-            description = request.POST.get('description')
-
-            query = designation_models.update_designation()
-            execute_sql(query, [designation_name, description, id])
-            return redirect('list_designations')
-
-        query = designation_models.select_one_designation()
-        designation = execute_sql(query, [id])[0]
-        return render(request, 'backend/designation/designation.html', {'action': action, 'data': designation})
+@login_required(login_url='login')
+def blood_group_form_view(request):
+    queryset = BloodGroup.objects.all().order_by('-id')
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'blood_groups': queryset,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/blood_group/bloodGroup.html', context)
 
 
-    elif action == 'status' and id:
-        status = request.GET.get('status')  # 'Y' or 'N'
-        date_time = get_current_datetime()
+class CountryViewSet(viewsets.ModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
-        if status == 'Y':
-            data = {
-                'active_flag': 'Y',
-                'inactive_date': None,
-                'last_updated_by': '',
-                'last_updated_date': date_time,
-            }
-        else:
-            data = {
-                'active_flag': 'N',
-                'inactive_date': date_time,
-                'last_updated_by': '',
-                'last_updated_date': date_time,
-            }
-
-        query = designation_models.update_designation_status()
-
-        execute_sql(query, [
-            data['active_flag'],
-            data['inactive_date'],
-            data['last_updated_by'],
-            data['last_updated_date'],
-            id
-        ])
-        return redirect(request.META.get('HTTP_REFERER', 'list_designation'))
-
-    else:
-        list_name = 'ACTIVESTATUS'
-        activeFlag = lov(list_name)
-
-        designation_name    = request.GET.get('designation_name', '')
-        active_flag         = request.GET.get('active_flag', '')
-        page                = int(request.GET.get('page', 1))
-        limit               = int(request.GET.get('limit', 10))
-        offset              = (page - 1) * limit
-
-        # Count query
-        count_query, count_params = designation_models.get_filtered_designations(
-            designation_name=designation_name,
-            active_flag=active_flag,
-            count_only=True
-        )
-        total_rows = execute_sql(count_query, count_params)[0]['total']
-
-        # Data query
-        data_query, data_params = designation_models.get_filtered_designations(
-            designation_name    = designation_name,
-            active_flag         = active_flag,
-            limit               = limit,
-            offset              = offset
-        )
-        designation = execute_sql(data_query, data_params)
+@login_required(login_url='login')
+def country_form_view(request):
+    queryset = Country.objects.all().order_by('-id')
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'countries': queryset,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/country/country.html', context)
 
 
-        starting = offset + 1 if total_rows > 0 else 0
-        ending = offset + len(designation)
-        total_pages = (total_rows + limit - 1) // limit
-        pagination = range(1, total_pages + 1)
+class StateViewSet(viewsets.ModelViewSet):
+    queryset = State.objects.all().order_by('-id')
+    serializer_class = StateSerializer
 
-        return render(request, 'backend/designation/designation.html', {
-            'page_title'        : page_title,
-            'designation'       : designation,
-            'activeFlag'        : activeFlag,
-            'designation_name'  : designation_name,
-            'active_flag'       : active_flag,
-            'starting'          : starting,
-            'ending'            : ending,
-            'totalRows'         : total_rows,
-            'pagination'        : pagination,
-            'current_page'      : page,
-            'limit'             : limit,
-            'limit_options'     : [10, 20, 50, 100],
-        })
+
+@login_required(login_url='login')
+def state_form_view(request):
+    countries = Country.objects.filter(active_flag='Y').order_by('country_name')
+    activeFlag = lovList('ACTIVESTATUS')  # assuming it returns [{'list_code':'Y','list_value':'Active'}, ...]
+    context = {
+        'countries': countries,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/state/state.html', context)
+
+class CityViewSet(viewsets.ModelViewSet):
+    queryset = City.objects.all().order_by('-id')
+    serializer_class = CitySerializer
+
+
+@login_required(login_url='login')
+def city_form_view(request):
+    countries = Country.objects.filter(active_flag='Y').order_by('country_name')
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'countries': countries,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/city/city.html', context)
+
+
+@login_required(login_url='login')
+def get_states_by_country(request):
+    country_id = request.GET.get('country_id')
+    states = State.objects.filter(country_id=country_id, active_flag='Y').values('id', 'state_name')
+    return JsonResponse({'states': list(states)})
+
+@login_required(login_url='login')
+def get_cities_by_state(request):
+    state_id = request.GET.get('state_id')
+    cities = City.objects.filter(state_id=state_id, active_flag='Y').values('id', 'city_name')
+    return JsonResponse({'cities': list(cities)})
+
+class LocationViewSet(viewsets.ModelViewSet):
+    queryset = Location.objects.all().order_by('-id')
+    serializer_class = LocationSerializer
+
+@login_required(login_url='login')
+def location_form_view(request):
+    countries = Country.objects.filter(active_flag='Y').order_by('country_name')
+    activeFlag = lovList('ACTIVESTATUS')
+    context = {
+        'countries': countries,
+        'activeFlag': activeFlag
+    }
+    return render(request, 'backend/location/location.html', context)
+
+
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employees.objects.all().order_by('-id')
+    serializer_class = EmployeeSerializer
+# HTML view (template page)
+
+@login_required(login_url='login')
+def employee_form_view(request):
+
+    context = {
+        'countries': Country.objects.filter(active_flag='Y').order_by('country_name'),
+        'locations': Location.objects.filter(active_flag='Y'),
+        'departments': Department.objects.filter(active_flag='Y'),
+        'designations': Designation.objects.filter(active_flag='Y'),
+        'genders': lovList('GENDER'),
+        'employment_types': lovList('EMPLOYMENT-TYPE'),
+        'pay_frequencies': lovList('PAY-FREQUENCIES'),
+        'blood_groups': BloodGroup.objects.filter(active_flag='Y').order_by('-id'),
+    }
+    return render(request, 'backend/employee/employee.html', context)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('-id')
+    serializer_class = UserSerializer
+
+    # Optionally you can override perform_create/perform_update if you need custom behavior
+
+@login_required(login_url='login')
+@api_view(['GET'])
+def get_roles(request):
+    roles = Roles.objects.filter(active_flag='Y').order_by('role_name')
+    serializer = RolesSerializer(roles, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@login_required(login_url='login')
+@api_view(['POST'])
+def update_user_line_status(request):
+    line_id = request.data.get("id")
+    status_flag = request.data.get("active_flag")
+
+    if not line_id or status_flag is None:
+        return Response({"error": "Missing 'id' or 'active_flag'"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        line = UserLine.objects.get(id=line_id)
+        line.active_flag = status_flag
+        line.save()
+        return Response({"message": "Status updated"}, status=status.HTTP_200_OK)
+    except UserLine.DoesNotExist:
+        return Response({"error": "Line not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@login_required(login_url='login')
+@api_view(['GET'])
+def get_employees(request):
+    employees = Employees.objects.filter(active_flag='Y').order_by('first_name').values('id', 'first_name', 'last_name')
+    return Response({"employees": list(employees)}, status=status.HTTP_200_OK)
+
+
+@login_required(login_url='login')
+def users_form_view(request):
+    # lovList function used earlier — if you have it, it should return listtypes
+    try:
+        userType = lovList('USER-TYPE')
+        activeFlag = lovList('ACTIVESTATUS')
+    except Exception:
+        userType = []
+        activeFlag = []
+    context = {
+        'userType': userType,
+        'employees': Employees.objects.filter(active_flag='Y'),
+        'activeFlag': activeFlag,
+    }
+    return render(request, 'backend/users/users.html', context)
+
+
+@login_required(login_url='login')
+def get_employee(request):
+    employees = Employees.objects.filter(active_flag='Y').values('id', 'first_name', 'last_name')
+    return JsonResponse({'employees': list(employees)})

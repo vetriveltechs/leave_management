@@ -1859,7 +1859,7 @@ td.tablewidth12 {
 
 i.fa.fa-chevron-down {
     font-size: 8px;
-    padding: 3px 0px 0px 0px;
+    padding: 3px 0px 0px 5px;
     /* margin: 4px 5px 4px 0px; */
     float: right;
 }
@@ -2441,6 +2441,7 @@ i.fa.fa-tasks.font-22.avatar-title.text-white {
     color: #fff;
     /* background-color: #1598e1; */
     background-color: #fe7329;
+    border: 1px solid #fe7329;
     /* box-shadow: 0 8px 25px -8px #244b8f; */
 }
 

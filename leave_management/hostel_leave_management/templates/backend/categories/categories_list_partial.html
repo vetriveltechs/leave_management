@@ -1,0 +1,139 @@
+<!-- backend/department/department_list_partial.html -->
+{% if request.GET %}
+
+    <div class="row mt-3">
+        {% if categories|length > 0 %}
+            <div class="col-md-11">
+
+            </div>
+            <div class="col-md-1 text-right mb-3">
+                <select name="limit" class="form-control" id="limitSelect" --onchange="limitChange(this.value)">
+                    {% for option in limit_options %}
+                        <option value="{{ option }}" {% if option == limit %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="new-scroller">
+        <table id="myTable" class="table table-bordered table-hover tbl_height">
+            <thead>
+                <tr>
+                    <th class="text-center tab-md-100">Controls</th>
+                    <th class="text-left tab-md-140">Category Name</th>
+                    <th class="text-left tab-md-140">Category Description</th>
+                    <!-- <th class="text-left tab-md-140">Category level 1 Name</th>
+                    <th class="text-left tab-md-140">Category level 2 Name</th>
+                    <th class="text-left tab-md-140">Category level 3 Name</th> -->
+                    <th class="text-left tab-md-140">Disp Seq No</th>
+                    <th class="text-center tab-md-100">Status</th>
+                </tr>
+        </thead>
+        <tbody>
+            {% if categories %}
+                {% for row in categories %}
+                <tr>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-outline-info dropdown-toggle btn-sm" data-toggle="dropdown">
+                                Action
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a title="Edit" href="{% url 'edit_view_categories' row.pk %}">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a title="View" href="{% url 'edit_view_categories' row.pk %}">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="block" href="{% url 'status_update_categories' row.pk %}" title="Change Status">
+                                        {% if row.active_flag == 'Y' %}
+                                            <i class="fa fa-check"></i> Active
+                                        {% else %}
+                                            <i class="fa fa-times"></i> Inactive
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>{{ row.category_name|default:''|capfirst }}</td>
+                    <td>{{ row.category_description|default:''|capfirst }}</td>
+                    <!-- <td>{{ row.cat_level_1.list_value|default:''|capfirst }}</td>
+                    <td>{{ row.cat_level_2.list_value|default:''|capfirst }}</td>
+                    <td>{{ row.cat_level_3.list_value|default:''|capfirst }}</td> -->
+                    <td>{{ row.disp_seq_num|default:'' }}</td>
+                    <td class="text-center">
+                        {% if row.active_flag == 'Y' %}
+                            <span class="btn btn-outline-success btn-sm" title="Active">Active</span>
+                        {% else %}
+                            <span class="btn btn-outline-warning btn-sm" title="Inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No categories found.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    </div>
+
+    {% if categories|length > 0 %}
+        <div class="mb-2">
+            Showing {{ starting }} to {{ ending }} of {{ totalRows }} entries
+        </div>
+    {% endif %}
+
+    <!-- Pagination -->
+    {% if totalRows > limit %}
+        <div class="col-md-12 text-right" style="padding: 0px 20px 0px 0px;">
+            <ul class="pagination justify-content-end">
+                <!-- Previous -->
+                <li class="page-item {% if current_page <= 1 %}disabled{% endif %}">
+                    {% if current_page > 1 %}
+                    <a class="page-link paginationLink" href="?page={{ current_page|add:"-1" }}&limit={{ limit }}&category_name={{ category_name }}&active_flag={{ active_flag }}">
+                        Prev
+                    </a>
+
+                    {% else %}
+                        <span class="page-link">Prev</span>
+                    {% endif %}
+                </li>
+
+                <!-- Page Numbers -->
+                {% for page_num in pagination %}
+                    <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                        {% if page_num == current_page %}
+                            <span class="page-link">{{ page_num }}</span>
+                        {% else %}
+                        <a class="page-link paginationLink" href="?page={{ page_num }}&limit={{ limit }}&category_name={{ category_name }}&active_flag={{ active_flag }}">
+                            {{ page_num }}
+                        </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+
+                <!-- Next -->
+                <li class="page-item {% if current_page >= pagination|last %}disabled{% endif %}">
+                    {% if current_page < pagination|last %}
+                    <a class="page-link paginationLink" href="?page={{ current_page|add:"1" }}&limit={{ limit }}&category_name={{ category_name }}&active_flag={{ active_flag }}">
+                        Prev
+                    </a>
+
+                    {% else %}
+                        <span class="page-link">Next</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+{% endif %}

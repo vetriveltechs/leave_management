@@ -1,0 +1,414 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %}Home | My Website{% endblock %}
+
+{% block content %}
+    {% load static %}
+
+    <div class="content"><!-- Content start-->
+        <div class="card"><!-- Card start-->
+            <div class="card-body">
+                {% if action == 'add' or action == 'edit' or action == 'view' %}
+                    <form action="" --class="form-validate-jquery" enctype="multipart/form-data" method="POST">
+                                        {% csrf_token %}
+                        <div class="header-lines">
+                        <!-- Buttons start here -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h3>
+                                        <b>
+                                            {% if action == 'add' %}
+                                                Create
+                                            {% elif action == 'edit' %}
+                                                Edit
+                                            {% elif action == 'view' %}
+                                                View
+                                            {% endif %}
+                                            Document Numbering
+                                        </b>
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    {% if action == 'add' or action == 'edit' %}
+                                        <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                        <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                    {% endif %}
+
+                                    <a href="{% url 'document_numbering' %}" class="btn btn-default btn-sm">Close</a>
+                                </div>
+                            </div>
+                        <!-- Buttons end here -->
+
+                            <fieldset>
+                                <section class="header-section">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label document_number_type"><span class="text-danger">*</span> Document Number Type</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <select name="document_number_type" id="document_number_type" class="form-control" required>
+                                                        <option value="">- Select -</option>
+                                                        {% for row in document_number_type %}
+                                                            <option value="{{ row.list_code }}"
+                                                                {% if documentNumbering and row.list_code == documentNumbering.document_number_type.list_code %}selected{% endif %}>
+                                                                {{ row.list_value|capfirst }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label prefix"><span class="text-danger">*</span> Prefix</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="prefix" id="prefix" class="form-control" oninput="updatePreview()" placeholder="Prefix" value="{% if documentNumbering %}{{ documentNumbering.prefix }}{% endif %}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label start_date"><span class="text-danger">*</span> Start Date</label>
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" id="start_date" name="start_date" autocomplete="off" readonly class="form-control" value="{{ documentNumbering.start_date|date:'d-M-Y' }}" placeholder="Start Date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label document_type"> Document Type</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="document_type" id="document_type" class="form-control" placeholder="Document Type" value="{% if documentNumbering %}{{ documentNumbering.document_type }}{% endif %}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label next_number"> Next Number</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="next_number" id="next_number" class="form-control" oninput="updatePreview()" placeholder="Next Number" value="{% if documentNumbering %}{{ documentNumbering.next_number }}{% endif %}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label end_date"> End Date</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" id="end_date" name="end_date" autocomplete="off" readonly class="form-control" value="{{ documentNumbering.end_date|date:'d-M-Y' }}" placeholder="End Date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label preview"> Preview</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="preview" id="preview" readonly class="form-control" placeholder="Preview" value="{{ documentNumbering.preview|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label suffix"> Suffix</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="suffix" id="suffix" class="form-control" oninput="updatePreview()" placeholder="Suffix" value="{% if documentNumbering %}{{ documentNumbering.suffix }}{% endif %}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <script>
+                                    $(document).ready(function () {
+
+                                        $(".default_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy"
+                                        });
+
+                                        $(".future_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy",
+                                            maxDate: 0
+                                        });
+                                        $(".previous_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy",
+                                            minDate: 0
+                                        });
+
+                                        $("#start_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy",
+                                            minDate: 0,
+                                            onSelect: function () {
+                                                var sDate = $(this).datepicker("getDate");
+                                                $("#end_date").val("").datepicker("option", "minDate", sDate);
+                                            }
+                                        });
+
+                                        $("#end_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy",
+                                            minDate: 0,
+                                        });
+                                    });
+
+                                    function updatePreview() 
+                                    {
+                                        var prefix  = $('#prefix').val() || '';
+                                        var next    = $('#next_number').val() || '';
+                                        var suffix  = $('#suffix').val() || '';
+                                        $('#preview').val(prefix + next + suffix);
+                                    }
+                                </script>
+
+                            </fieldset>
+                            <div class="col-md-12 mt-3 pr-0 text-right">
+                                {% if action == 'add' or action == 'edit' %}
+                                    <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                    <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                {% endif %}
+
+                                <a href="{% url 'document_numbering' %}" class="btn btn-default btn-sm">Close</a>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-6"><h3><b>{{ page_title }}</b></h3></div>
+                        <div class="col-md-6 float-right text-right">
+                            <a href="{% url 'add_document_numbering' %}" class="btn btn-info btn-sm">
+                                Create Document Numbering
+                            </a>
+
+                        </div>
+                    </div>
+                    <form action="" class="form-validate-jquery" method="get" id="searchCategoryForm">
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="row">
+                                <label class="col-form-label col-md-5 text-right">Document Number Type</label>
+                                <div class="form-group col-md-7">
+                                  <select name="document_number_type" id="document_number_type" class="form-control searchDropdown">
+                                    <option value="">- Select -</option>
+                                    {% for row in document_number_type_list %}
+                                    {% with selected=request.GET.document_number_type %}
+                                        <option value="{{ row.list_code }}" {% if selected == row.list_code %}selected{% endif %}>
+                                            {{ row.list_value|capfirst }}
+                                        </option>
+                                    {% endwith %}
+                                    {% endfor %}
+                                </select>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <label class="col-form-label col-md-5 text-right">Status</label>
+                                    <div class="form-group col-md-7">
+                                        <select name="active_flag" id="active_flag" class="form-control searchDropdown">
+                                            {# Optional default option #}
+                                            <!-- <option value="">- Select -</option> -->
+                                            {% for row in active_flag_list %}
+                                            {% with selected=request.GET.active_flag %}
+                                                <option value="{{ row.list_code }}" {% if selected == row.list_code %}selected{% endif %}>
+                                                {{ row.list_value|capfirst }}
+                                                </option>
+                                            {% endwith %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-info">Search <i class="fa fa-search"></i></button>
+                                <a href="{% url 'document_numbering' %}" title="Clear" class="btn btn-default">Clear</a>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="listingContent">
+                        <!-- backend/department/department_list_partial.html -->
+                        {% if request.GET %}
+
+                            <div class="row mt-3">
+                                {% if doc_page|length > 0 %}
+                                    <div class="col-md-11">
+
+                                    </div>
+                                    <div class="col-md-1 text-right mb-3">
+                                        <select name="limit" class="form-control" id="limitSelect" --onchange="limitChange(this.value)">
+                                            {% for option in limit_options %}
+                                                <option value="{{ option }}" {% if option == limit %}selected{% endif %}>{{ option }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="new-scroller">
+                                <table id="myTable" class="table table-bordered table-hover tbl_height">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center tab-md-100">Controls</th>
+                                            <th class="text-left tab-md-140">Document Number Type</th>
+                                            <th class="text-left tab-md-140">Prefix</th>
+                                            <th class="text-left tab-md-140">Next Number</th>
+                                            <th class="text-left tab-md-140">Suffix</th>
+                                            <th class="text-left tab-md-140">Preview</th>
+                                            <th class="text-center tab-md-100">Status</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                    {% if doc_page %}
+                                        {% for row in doc_page %}
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn btn-outline-info dropdown-toggle btn-sm" data-toggle="dropdown">
+                                                        Action
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li>
+                                                            <a title="Edit" href="{% url 'edit_view_document_numbering' row.document_numbering_id %}">
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a title="View" href="{% url 'edit_view_document_numbering' row.document_numbering_id %}">
+                                                                <i class="fa fa-eye"></i> View
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="block" href="{% url 'status_update_document_numbering' row.document_numbering_id %}" title="Change Status">
+                                                                {% if row.active_flag == 'Y' %}
+                                                                    <i class="fa fa-check"></i> Active
+                                                                {% else %}
+                                                                    <i class="fa fa-times"></i> Inactive
+                                                                {% endif %}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td>{{ row.document_number_type_value|default:''|capfirst }}</td>
+                                            <td>{{ row.prefix }}</td>
+                                            <td>{{ row.next_number }}</td>
+                                            <td>{{ row.suffix }}</td>
+                                            <td>{{row.prefix}}{{row.next_number}}{{row.suffix}}</td>
+                                            <td class="text-center">
+                                                {% if row.active_flag == 'Y' %}
+                                                    <span class="btn btn-outline-success btn-sm" title="Active">Active</span>
+                                                {% else %}
+                                                    <span class="btn btn-outline-warning btn-sm" title="Inactive">Inactive</span>
+                                                {% endif %}
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">No document numbering found.</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            </div>
+
+                            {% if doc_page|length > 0 %}
+                                <div class="mb-2">
+                                    Showing {{ starting }} to {{ ending }} of {{ totalRows }} entries
+                                </div>
+                            {% endif %}
+
+                            <!-- Pagination -->
+                            {% if totalRows > limit %}
+                                <div class="col-md-12 text-right" style="padding: 0px 20px 0px 0px;">
+                                    <ul class="pagination justify-content-end">
+                                        <!-- Previous -->
+                                        <li class="page-item {% if current_page <= 1 %}disabled{% endif %}">
+                                            {% if current_page > 1 %}
+                                            <a class="page-link paginationLink" href="?page={{ current_page|add:"-1" }}&limit={{ limit }}&category_name={{ category_name }}&active_flag={{ active_flag }}">
+                                                Prev
+                                            </a>
+
+                                            {% else %}
+                                                <span class="page-link">Prev</span>
+                                            {% endif %}
+                                        </li>
+
+                                        <!-- Page Numbers -->
+                                        {% for page_num in pagination %}
+                                            <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                                {% if page_num == current_page %}
+                                                    <span class="page-link">{{ page_num }}</span>
+                                                {% else %}
+                                                <a class="page-link paginationLink" href="?page={{ page_num }}&limit={{ limit }}&category_name={{ category_name }}&active_flag={{ active_flag }}">
+                                                    {{ page_num }}
+                                                </a>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+
+                                        <!-- Next -->
+                                        <li class="page-item {% if current_page >= pagination|last %}disabled{% endif %}">
+                                            {% if current_page < pagination|last %}
+                                            <a class="page-link paginationLink" href="?page={{ current_page|add:"1" }}&limit={{ limit }}&category_name={{ category_name }}&active_flag={{ active_flag }}">
+                                                Prev
+                                            </a>
+
+                                            {% else %}
+                                                <span class="page-link">Next</span>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+   
+
+{% endblock %}

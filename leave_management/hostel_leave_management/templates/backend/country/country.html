@@ -1,0 +1,133 @@
+{% extends "backend/base/base.html" %}
+{% block title %}Country | My Website{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <form id="countryForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="country_id" name="country_id">
+                <h4 class="card-title" id="page_title"><b>Create Country</b></h4>
+
+                <fieldset>
+                    <section>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <label class="col-md-4 text-right col-form-label country_name"><span class="text-danger">*</span> Country Name</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="country_name" class="form-control" placeholder="Country Name">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4 text-right col-form-label country_code"><span class="text-danger">*</span> Country Code</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="country_code" class="form-control" placeholder="Country Code">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4 text-right col-form-label currency_symbol"><span class="text-danger">*</span> Currency Symbol</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="currency_symbol" class="form-control" placeholder="Currency Symbol">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4 text-right col-form-label currency_code"><span class="text-danger">*</span> Currency Code</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="currency_code" class="form-control" placeholder="Currency Code">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4 text-right col-form-label">Country Flag</label>
+                                    <div class="col-md-6">
+                                        <input type="file" id="country_flag" accept="image/*" class="form-control">
+                                        <div id="flag_preview" class="mt-2">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </fieldset>
+
+                <div class="text-right mt-3">
+                    <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save & Continue" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                    <button type="reset" id="reset_btn" class="btn btn-default btn-sm">Reset</button>
+                </div>
+            </form>
+
+            <hr>
+            <h4><b>Countries</b></h4>
+
+            <!-- Filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">Country Name</label>
+                        <div class="form-group col-md-7">
+                            <input type="text" id="search_country_name" class="form-control searchDropdown" placeholder="Country Name">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">Status</label>
+                        <div class="form-group col-md-7">
+                            <select id="active_flag" class="form-control searchDropdown">
+                                {% for row in activeFlag %}
+                                    <option value="{{ row.list_code }}">{{ row.list_value|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <a href="{% url 'country-list' %}" title="Clear" class="btn btn-default">Clear</a>
+                </div>
+            </div>
+
+            <div class="row pb-3">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-right float-right">
+                    <label>Show 
+                        <select id="pageSize" class="form-control form-control-sm" style="width:auto; display:inline-block;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered table-hover" id="country_table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Controls</th>
+                        <th>Country Name</th>
+                        <th>Country Code</th>
+                        <th>Currency</th>
+                        <th>Flag</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div id="pagination" class="text-right"></div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/backend/assets/js/country/country.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,188 @@
+<!-- backend/department/department_list_partial.html -->
+{% load static %}
+
+    <div class="new-scroller">
+        <table id="myTable" class="table table-bordered table-hover tbl_height">
+            <thead>
+                <tr>
+                    <th class="text-center tab-md-100">Controls</th>
+                    <th class="text-left tab-md-140">List Name</th>
+                    <th class="text-left tab-md-140">List Description</th>
+                    <th class="text-left tab-md-140">Order Sequence</th>
+                    <th class="text-left tab-md-140">Short Description</th>
+                    <th class="text-center tab-md-100">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if list_type %}
+                {% for row in list_type %}
+                <tr>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-outline-info dropdown-toggle btn-sm" data-toggle="dropdown">
+                                Action
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a title="Edit" href="#" data-toggle="modal" data-target="#editModal{{ row.list_type_value_id }}">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a title="View" href="">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="block" href="" title="Change Status">
+                                        {% if row.active_flag == 'Y' %}
+                                            <i class="fa fa-check"></i> Active
+                                        {% else %}
+                                            <i class="fa fa-times"></i> Inactive
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% if action == 'add' or action == 'edit' or action == 'view' %}
+
+                            <div class="modal fade" id="editModal{{ row.list_type_value_id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ row.list_type_value_id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form method="POST" enctype="multipart/form-data" action="{% url 'lov_list_type_value_edit' pk=row.list_type_value_id %}">
+                                    {% csrf_token %}
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel{{ row.list_type_value_id }}"><b>Edit List Type Value</b></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <!-- Items Start-->
+                                        <fieldset --class="mb-3">
+                                            <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label float-left"><span class="text-danger">*</span> List Code </label>
+                                                <input type="text" name="list_code" value="{{ row.list_code }}" id="list_code" placeholder='List Code' required class="form-control">
+                                                <input type="hidden" name="list_type_value_id" value="{{ row.list_type_value_id }}">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label float-left"><span class="text-danger">*</span> List Value </label>
+                                                <input type="text" name="list_value" value="{{ row.list_value }}" id="list_value" placeholder='List Value' required class="form-control">
+                                            </div>
+                                            </div>
+
+                                            <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label float-left">Order Sequence </label>
+                                                <input type="number"  name="order_sequence" value="{{ row.order_sequence }}" id="order_sequence" class="form-control" placeholder='Order Sequence'>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label class="col-form-label float-left">Short Description</label>
+                                                <input type="text" name="short_description" value="{{ row.short_description }}" id="short_description" class="form-control" placeholder='Short Description'>
+                                            </div>
+                                            </div>
+
+
+
+
+
+                                        </fieldset>
+                                        <!-- Items Start-->
+                                        </div>
+
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <input type="submit" name="Update" value="Update" class="btn btn-primary">
+                                        </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>{{ row.list_code}}</td>
+                    <td>{{ row.list_value|capfirst }}</td>
+                    <td>{{ row.order_sequence}}</td>
+                    <td>{{ row.short_description|capfirst }}</td>
+                    <td class="text-center">
+                        {% if row.active_flag == 'Y' %}
+                            <span class="btn btn-outline-success btn-sm" title="Active">Active</span>
+                        {% else %}
+                            <span class="btn btn-outline-warning btn-sm" title="Inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6" class="text-center">
+                <img src="{% static 'uploads/nodata.png' %}" alt="No data">
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    </div>
+
+    {% if departments|length > 0 %}
+        <div class="mb-2">
+            Showing {{ starting }} to {{ ending }} of {{ totalRows }} entries
+        </div>
+    {% endif %}
+
+    <!-- Pagination -->
+    {% if totalRows > limit %}
+        <div class="col-md-12 text-right" style="padding: 0px 20px 0px 0px;">
+            <ul class="pagination justify-content-end">
+                <!-- Previous -->
+                <li class="page-item {% if current_page <= 1 %}disabled{% endif %}">
+                    {% if current_page > 1 %}
+                    <a class="page-link paginationLink" href="?page={{ current_page|add:"-1" }}&limit={{ limit }}&department_name={{ department_name }}&active_flag={{ active_flag }}">
+                        Prev
+                    </a>
+
+                    {% else %}
+                        <span class="page-link">Prev</span>
+                    {% endif %}
+                </li>
+
+                <!-- Page Numbers -->
+                {% for page_num in pagination %}
+                    <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                        {% if page_num == current_page %}
+                            <span class="page-link">{{ page_num }}</span>
+                        {% else %}
+                        <a class="page-link paginationLink" href="?page={{ page_num }}&limit={{ limit }}&department_name={{ department_name }}&active_flag={{ active_flag }}">
+                            {{ page_num }}
+                        </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+
+                <!-- Next -->
+                <li class="page-item {% if current_page >= pagination|last %}disabled{% endif %}">
+                    {% if current_page < pagination|last %}
+                    <a class="page-link paginationLink" href="?page={{ current_page|add:"1" }}&limit={{ limit }}&department_name={{ department_name }}&active_flag={{ active_flag }}">
+                        Prev
+                    </a>
+
+                    {% else %}
+                        <span class="page-link">Next</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+
+        <style>
+            .modal {
+  z-index: 1050 !important;
+}
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+        </style>
+    {% endif %}

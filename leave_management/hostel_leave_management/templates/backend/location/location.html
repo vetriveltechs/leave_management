@@ -1,0 +1,183 @@
+{% extends "backend/base/base.html" %}
+{% block title %}Location | My Website{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <form id="locationForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="location_id" name="location_id">
+                <h4 class="card-title" id="page_title"><b>Create Location</b></h4>
+
+                <fieldset>
+                    <section class="header-section">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Country -->
+                                <div class="row">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label country_id"><span class="text-danger">*</span> Country Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="country_id" name="country_id" class="form-control">
+                                            <option value="">Select Country</option>
+                                            {% for c in countries %}
+                                                <option value="{{ c.id }}">{{ c.country_name|title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- State -->
+                                <div class="row mt-2">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label state_id"><span class="text-danger">*</span> State Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="state_id" name="state_id" class="form-control">
+                                            <option value="">Select State</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- City -->
+                                <div class="row mt-2">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label city_id"><span class="text-danger">*</span> City Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="city_id" name="city_id" class="form-control">
+                                            <option value="">Select City</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Location Name -->
+                                <div class="row mt-2">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label location_name"><span class="text-danger">*</span> Location Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="location_name" name="location_name" class="form-control" placeholder="Location Name" autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="row mt-2">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label">Description</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea id="description" name="description" class="form-control" rows="1" placeholder="Description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </fieldset>
+
+                <div class="col-md-12 mt-3 text-right">
+                    <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save & Continue" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                    <button type="reset" id="reset_btn" class="btn btn-default btn-sm">Reset</button>
+                </div>
+            </form>
+
+            <hr>
+            <h4 class="card-title"><b>Locations</b></h4>
+
+            <!-- Filters -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">Country</label>
+                        <div class="form-group col-md-7">
+                            <select id="search_country_id" class="form-control searchDropdown">
+                                <option value="">- Select -</option>
+                                {% for c in countries %}
+                                    <option value="{{ c.id }}">{{ c.country_name|title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">State</label>
+                        <div class="form-group col-md-7">
+                            <select id="search_state_id" class="form-control searchDropdown">
+                                <option value="">- Select -</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">City</label>
+                        <div class="form-group col-md-7">
+                            <select id="search_city_id" class="form-control searchDropdown">
+                                <option value="">- Select -</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">Status</label>
+                        <div class="form-group col-md-7">
+                            <select id="active_flag" class="form-control searchDropdown">
+                                {% for row in activeFlag %}
+                                    <option value="{{ row.list_code }}">{{ row.list_value|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12 text-right">
+                    <a href="{% url 'location-list' %}" class="btn btn-default">Clear</a>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                
+                <div class="col-md-12 text-right">
+                    <label>Show 
+                        <select id="pageSize" class="form-control form-control-sm" style="width:auto; display:inline-block;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered table-hover" id="location_table">
+                <thead>
+                    <tr>
+                        <th class="tab-md-100 text-center">Controls</th>
+                        <th>Country</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Location Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="text-right mt-2" id="pagination"></div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/backend/assets/js/location/location.js' %}"></script>
+{% endblock %}

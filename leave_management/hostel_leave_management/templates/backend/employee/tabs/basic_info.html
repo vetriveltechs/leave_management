@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col-md-4">
+        <label class="employment_type_id"><span class="text-danger">*</span> Employment Type</label>
+        <select class="form-control" id="employment_type_id">
+            <option value="">-- Select --</option>
+            {% for e in employment_types %}
+            <option value="{{ e.list_type_value_id }}">{{ e.list_value }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label class="first_name"><span class="text-danger">*</span> First Name</label>
+        <input type="text" class="form-control" id="first_name">
+    </div>
+    <div class="col-md-4">
+        <label>Middle Name</label>
+        <input type="text" class="form-control" id="middle_name">
+    </div>
+
+    <div class="col-md-4 mt-2">
+        <label>Last Name</label>
+        <input type="text" class="form-control" id="last_name">
+    </div>
+    <div class="col-md-4 mt-2">
+        <label class="mobile_number"><span class="text-danger">*</span> Mobile Number</label>
+        <input type="text" class="form-control" id="mobile_number">
+    </div>
+    <div class="col-md-4 mt-2">
+        <label>Alternate Mobile Number</label>
+        <input type="text" class="form-control" id="alt_mobile_number">
+    </div>
+
+    <div class="col-md-4 mt-2">
+        <label class="email"><span class="text-danger">*</span> Email</label>
+        <input type="email" class="form-control" id="email">
+    </div>
+    <div class="col-md-4 mt-2">
+        <label>Alternate E-Mail</label>
+        <input type="email" class="form-control" id="alt_email">
+    </div>
+    <div class="col-md-4 mt-2">
+        <label class="date_of_birth"><span class="text-danger">*</span> Date of Birth</label>
+        <input type="date" class="form-control" id="date_of_birth">
+    </div>
+
+    <div class="col-md-4 mt-2">
+        <label class="gender_id"><span class="text-danger">*</span> Gender</label>
+        <select class="form-control" id="gender_id">
+            <option value="">-- Select --</option>
+            {% for g in genders %}
+            <option value="{{ g.list_type_value_id }}">{{ g.list_value }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4 mt-2">
+        <label>Blood Group</label>
+        <select class="form-control" id="blood_group_id">
+            <option value="">-- Select --</option>
+            {% for b in blood_groups %}
+            <option value="{{ b.id }}">{{ b.blood_group_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4 mt-2">
+        <label>Profile Image</label>
+        <input type="file" class="form-control" id="profile_image">
+    </div>
+</div>
+

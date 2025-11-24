@@ -35,83 +35,90 @@
         <div class="settings">
           <div class="row">
             <div class="col-md-6" >
-              <div class="card-setting">
+                <div class="card-setting">
+                    <ul class="settings-list">
+                        <a href="{% url 'country-list' %}" title="Country">
+                            <li>
+                                <i class="fa fa-globe fa-icon-text-orange-background"></i>
+                                <span class="list-one">Country</span>
+                                <p>Manage all country.</p>
+                            </li>
+                        </a>
 
-                <ul class="settings-list">
-                  <a href="" title="List of Values">
-                    <li>
-                      <i class="fa fa-magic fa-icon-text-red-background"></i>
-                      <span class="list-one">List of Values</span>
-                      <p>Manage all List of Values.</p>
-                    </li>
-                  </a>
-                  <a href="{% url 'list_designation' %}" title="Designation">
-                    <li>
-                      <i class="fa fa-briefcase fa-icon-text-blue-background"></i>
-                      <span class="list-one">Designation</span>
-                      <p>Manage all Designation.</p>
-                    </li>
-                  </a>
+                        <a href="{% url 'state-list' %}" title="State">
+                            <li>
+                                <i class="fa fa-compass fa-icon-text-green-background"></i>
+                                <span class="list-one">State</span>
+                                <p>Manage all state.</p>
+                            </li>
+                        </a>
 
-                  <a href="" title="uom">
-                    <li>
-                      <i class="fa fa-desktop fa-icon-text-gray-background"></i>
-                      <span class="list-one">UOM</span>
-                      <p>Manage all  UOM</p>
-                    </li>
-                  </a>
+                        <a href="{% url 'city-list' %}" title="City">
+                            <li>
+                                <i class="fa fa-map-signs fa-icon-text-blue-background"></i>
+                                <span class="list-one">City</span>
+                                <p>Manage all city.</p>
+                            </li>
+                        </a>
+                        <a href="{% url 'location-list' %}" title="Location">
+                            <li>
+                                <i class="fa fa-map-marker fa-icon-text-aqua-background"></i>
+                                <span class="list-one">Location</span>
+                                <p>Manage all location.</p>
+                            </li>
+                        </a>
+                    
+                        <a href="{% url 'blood-group-list' %}" title="Blood Group">
+                            <li>
+                                <i class="fa fa-bolt fa-icon-text-gray-background"></i>
+                                <span class="list-one">Blood Group</span>
+                                <p>Manage all blood group.</p>
+                            </li>
+                        </a>
 
+                       
 
-                  <a href="{% url 'list_departments' %}" title="Department">
-                    <li>
-                    <i class="fa fa-level-up fa-icon-text-green-background"></i>
-                      <span class="list-one">Department</span>
-                      <p>Manage all Department.</p>
-                    </li>
-                  </a>
-
-                </ul>
-              </div>
+                        
+                    </ul>
+                </div>
 
             </div>
 
             <div class="col-md-6">
               <div class="card-setting">
                 <ul class="settings-list">
-                  <!-- <a href="" title="SEO">
-                    <li>
-                      <i class="fa fa-search fa-icon-text-blue-background"></i>
-                      <span class="list-one">SEO</span>
-                      <p>Manage all SEO.</p>
-                    </li>
-                  </a> -->
-                  <a href="" title="Product Categories">
-                    <li>
-                      <i class="fa fa-product-hunt fa-icon-text-aqua-background"></i>
-                      <span class="list-one">Product Categories</span>
-                      <p>Manage all Product Categories</p>
-                    </li>
-                  </a>
+                    <a href="{% url 'designation-form' %}" title="Designation">
+                            <li>
+                                <i class="fa fa-briefcase fa-icon-text-blue-background"></i>
+                                <span class="list-one">Designation</span>
+                                <p>Manage all Designation.</p>
+                            </li>
+                        </a>
 
-
-                    <a href="" title="Document Numbering">
-                      <li>
-                        <i class="fa fa-arrows fa-icon-text-blue-background"></i>
-                        <span class="list-one">Document Numbering</span>
-                        <p>Manage all Document Numbering.</p>
-                      </li>
+                        <a href="{% url 'roles-list' %}" title="Roles">
+                            <li>
+                                <i class="fa fa-user fa-icon-text-orange-background"></i>
+                                <span class="list-one">Roles</span>
+                                <p>Manage all Roles.</p>
+                            </li>
+                        </a>
+                    <a href="{% url 'lov-form' %}" title="Lov">
+                        <li>
+                            <i class="fa fa-magic fa-icon-text-red-background"></i>
+                            <span class="list-one">Lov</span>
+                            <p>Manage all Lov.</p>
+                        </li>
                     </a>
 
-                    <a href="" title="Blood Group">
-                      <li>
-                        <i class="fa fa-bolt fa-icon-text-red-background"></i>
-                        <span class="list-one">Blood Groups</span>
-                        <p>Manage all Blood Groups.</p>
-                      </li>
+                    <a href="{% url 'department-list' %}" title="Department">
+                        <li>
+                            <i class="fa fa-level-up fa-icon-text-pink-background"></i>
+                            <span class="list-one">Department</span>
+                            <p>Manage all Department.</p>
+                        </li>
                     </a>
 
-
-
+                    
                 </ul>
               </div>
 

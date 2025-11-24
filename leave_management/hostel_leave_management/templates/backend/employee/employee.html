@@ -1,0 +1,121 @@
+{% extends "backend/base/base.html" %}
+{% block title %}Employee | My Website{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="content">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title"><b>Employee Management</b></h4>
+
+      <form id="csrfForm">{% csrf_token %}</form>
+
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active employee_menu_bar" onclick="tabChange('EMPLOYEES',this)">Employees</a></li>
+                    <li class="nav-item"><a class="nav-link employee_menu_bar" onclick="tabChange('BASIC-INFO',this)">Basic Info</a></li>
+                    <li class="nav-item"><a class="nav-link employee_menu_bar" onclick="tabChange('EMPLOYEE-DETAILS',this)">Employee Details</a></li>
+                    <li class="nav-item"><a class="nav-link employee_menu_bar" onclick="tabChange('IDENTITY',this)">Identity</a></li>
+                    <li class="nav-item"><a class="nav-link employee_menu_bar" onclick="tabChange('ADDRESS-INFO',this)">Address Info</a></li>
+                    <li class="nav-item"><a class="nav-link employee_menu_bar" onclick="tabChange('BANK-DETAILS',this)">Bank Details</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-right">
+                <a onclick="tabChange('BASIC-INFO', this)" class="btn btn-info btn-sm p-2 btn-create-employee">
+                    Create Employee
+                </a>
+            </div>
+        </div>
+
+      
+
+      <input type="hidden" id="employee_id">
+
+      <div class="tab-content pt-3">
+        <div class="tab-pane fade show active" id="tab-list">
+          <table class="table table-bordered" id="employee_table">
+            <thead>
+              <tr>
+                <th class="text-center">Action</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div id="pagination" class="text-end"></div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-basic">
+          {% include 'backend/employee/tabs/basic_info.html' %}
+            <div class="row">
+                <div class="col-md-12 text-right mt-3">
+                    <button class="btn btn-primary" onclick="saveBasicInfo()">Save</button>
+                    <button class="btn btn-secondary" onclick="tabChange('EMPLOYEES', $('.nav-link:contains(Employees)'))">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-details">
+          {% include 'backend/employee/tabs/employee_details.html' %}
+            <div class="row">
+                <div class="col-md-12 text-right mt-3">
+                    <button class="btn btn-primary" onclick="saveEmployeeDetails()">Save</button>
+                    <button class="btn btn-secondary" onclick="tabChange('EMPLOYEES', $('.nav-link:contains(Employees)'))">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-identity">
+          {% include 'backend/employee/tabs/identity.html' %}
+            <div class="row">
+                <div class="col-md-12 text-right mt-3">
+                    <button class="btn btn-primary" onclick="saveIdentityInfo()">Save</button>
+                    <button class="btn btn-secondary" onclick="tabChange('EMPLOYEES', $('.nav-link:contains(Employees)'))">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-address">
+          {% include 'backend/employee/tabs/address_info.html' %}
+            <div class="row">
+                <div class="col-md-12 text-right mt-3">
+                    <button class="btn btn-primary" onclick="saveAddressInfo()">Save</button>
+                    <button class="btn btn-secondary" onclick="tabChange('EMPLOYEES', $('.nav-link:contains(Employees)'))">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-bank">
+          {% include 'backend/employee/tabs/bank_detail.html' %}
+            <div class="row">
+                <div class="col-md-12 text-right mt-3">
+                    <button class="btn btn-primary" onclick="saveBankInfo()">Save</button>
+                    <button class="btn btn-secondary" onclick="tabChange('EMPLOYEES', $('.nav-link:contains(Employees)'))">Close</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{% static 'assets/backend/assets/js/employee/employee.js' %}"></script>
+
+<style>
+    .employee_menu_bar
+    {
+        cursor: pointer;
+    }
+    .errorClass {
+        color: red;
+    }
+</style>
+
+{% endblock %}

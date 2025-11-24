@@ -1,0 +1,133 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %}Designation | My Website{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <!-- Designation Form -->
+
+            <form id="listTypeValuesForm" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="hidden" id="list_type_id" name="list_type_id" value="{{ lov.list_type_id|default:'null' }}">
+                        <input type="hidden" id="list_type_value_id" name="list_type_value_id">
+                        <h4 class="card-title" id="page_title"><b>Create List Type Value</b></h4>
+                    </div>
+                    
+                </div>
+                <fieldset>
+                    <section class="header-section">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label class="col-form-label float-left list_code"><span class="text-danger">*</span> List Code </label>
+                                <input type="text" name="list_code" id="list_code" autocomplete="off" required class="form-control" value="" placeholder="List Code">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label class="col-form-label float-left list_value"><span class="text-danger">*</span> List Value </label>
+                                <input type="text" name="list_value" id="list_value" autocomplete="off" required class="form-control" value="" placeholder="List Value">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label class="col-form-label float-left order_sequence">Order Sequence </label>
+                                <input type="number" name="order_sequence" id="order_sequence" autocomplete="off" class="form-control" value="" placeholder="Order Sequence">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label class="col-form-label float-left">Short Description</label>
+                                <input type="text" name="short_description" id="short_description" autocomplete="off"  class="form-control" value="" placeholder="Short Description">
+                            </div>
+                            <div class="form-group col-md-12 mt-4 text-right" style="padding: 10px 0px 0px 0px">
+                                <label class="col-form-label"></label>
+                                <button type="submit" name="Add" id="save_btn" onclick="return saveBtn('save_btn');" title="Save & Continue" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                <button type="reset" id="reset_btn" class="btn btn-default btn-sm">Reset</button>
+                    
+                            </div>
+                        </div>
+                    </section>
+                </fieldset>
+            </form>
+
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="card-title"><b>List Type Values</b></h4>
+                </div>
+            </div>
+            <!-- Search Section -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">List Code</label>
+                        <div class="form-group col-md-7">
+                            <input type="text" id="search_list_code" class="form-control searchDropdown" placeholder="List Name">   
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5"><span class="text-danger">*</span> Status</label>
+                        <div class="form-group col-md-7">
+                            <select id="active_flag" class="form-control searchDropdown">
+                                {% for row in activeFlag %}
+                                    <option value="{{ row.list_code }}">{{ row.list_value|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <a href="{% url 'list-type-values-list' lov.list_type_id %}" title="Clear" class="btn btn-default">Clear</a>
+                </div>
+            </div>
+
+            <div class="row pb-3">
+                <div class="col-md-6">
+                    
+                </div>
+                <div class="col-md-6 text-right float-right">
+                    <label>Show 
+                        <select id="pageSize" class="form-control form-control-sm" style="width:auto; display:inline-block;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered table-hover line_items" id="line_items">
+                <thead>
+                    <tr>
+                        <th class="tab-md-200 text-center">Controls</th>
+                        <th class="tab-md-200">List Code</th>
+                        <th class="tab-md-200">List Value</th>
+                        <th class="tab-md-200">Order Sequence</th>
+                        <th class="tab-md-200 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="row mb-2">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-right">
+                    <div id="pagination"></div>
+                </div>
+            </div>
+
+            <div id="response" class="mt-3"></div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'assets/backend/assets/js/lov/listTypeValues.js' %}"></script>
+
+{% endblock %}

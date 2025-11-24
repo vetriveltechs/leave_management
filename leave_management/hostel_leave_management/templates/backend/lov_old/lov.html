@@ -1,0 +1,199 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %}Home | My Website{% endblock %}
+
+{% block content %}
+    {% load static %}
+
+    <div class="content"><!-- Content start-->
+        <div class="card"><!-- Card start-->
+            <div class="card-body">
+                {% if action == 'add' or action == 'edit' or action == 'view' %}
+                    <form action="" --class="form-validate-jquery" enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        <div class="header-lines">
+                        <!-- Buttons start here -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h3>
+                                        <b>
+                                            {% if action == 'add' %}
+                                                Create
+                                            {% elif action == 'edit' %}
+                                                Edit
+                                            {% elif action == 'view' %}
+                                                View
+                                            {% endif %}
+                                            Lov
+                                        </b>
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    {% if action == 'add' or action == 'edit' %}
+                                        <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                        <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                    {% endif %}
+
+                                    <a href="{% url 'list_lov' %}" class="btn btn-default btn-sm">Close</a>
+                                </div>
+                            </div>
+                        <!-- Buttons end here -->
+
+                            <fieldset>
+                                <section class="header-section">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                <div class="form-group text-right">
+                                                    <label class="col-form-label list_name"><span class="text-danger">*</span> List Name</label>
+                                                </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="text" id="list_name" name="list_name" autocomplete="off" class="form-control" value="{% if lov %}{{ lov.list_name }}{% endif %}" placeholder="List Name">
+                                                </div>
+                                                </div>
+                                            </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                            <div class="form-group text-right">
+                                                <label class="col-form-label description">List Description</label>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                                <textarea name="description" id="description" rows="1" autocomplete="off" class="form-control" placeholder="List Description">{% if lov %}{{ lov.description }}{% endif %}</textarea>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                        </div>
+
+                                    </div>
+                                </section>
+                            </fieldset>
+                            <div class="col-md-12 mt-3 pr-0 text-right">
+                                {% if action == 'add' or action == 'edit' %}
+                                    <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                    <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                {% endif %}
+
+                                <a href="{% url 'list_lov' %}" class="btn btn-default btn-sm">Close</a>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-6"><h3><b>{{ page_title }}</b></h3></div>
+                        <div class="col-md-6 float-right text-right">
+
+                            <a href="#" data-toggle="modal" data-target="#importcountryCSV" title="Import" class="btn btn-outline-warning btn-sm">
+                            <i class="icon-import"></i> Import
+                            </a>
+                            <a href="{% url 'add_lov' %}" class="btn btn-info btn-sm">
+                                Create Lov
+                            </a>
+
+                        </div>
+                    </div>
+                    <form action="" class="form-validate-jquery" method="get" id="searchDepartmentForm">
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="row">
+                                <label class="col-form-label col-md-5 text-right">Lov Name</label>
+                                <div class="form-group col-md-7">
+                                <input type="search" class="form-control" name="list_name" value="{{ request.GET.list_name|default:'' }}" placeholder="List Name" autocomplete="off">
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <label class="col-form-label col-md-5 text-right">Status</label>
+                                    <div class="form-group col-md-7">
+                                        <select name="active_flag" id="active_flag" class="form-control searchDropdown">
+                                            {# Optional default option #}
+                                            <!-- <option value="">- Select -</option> -->
+                                            {% for row in activeFlag %}
+                                            {% with selected=request.GET.active_flag %}
+                                                <option value="{{ row.list_code }}" {% if selected == row.list_code %}selected{% endif %}>
+                                                {{ row.list_value|capfirst }}
+                                                </option>
+                                            {% endwith %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-info">Search <i class="fa fa-search"></i></button>
+                                <a href="{% url 'list_lov' %}" title="Clear" class="btn btn-default">Clear</a>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="listingContent">
+                        {% include 'backend/lov/lov_list_partial.html' %}
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function() {
+
+            $('#searchDepartmentForm').on('submit', function(e) {
+                e.preventDefault();
+                fetchLovs($(this).serialize());
+            });
+
+            // 🛠 Change limit by AJAX
+            $(document).on('change', '#limitSelect', function() {
+
+                let formData = $('#searchDepartmentForm').serializeArray();
+                formData.push({name: 'limit', value: $(this).val()});
+                fetchLovs($.param(formData));
+            });
+
+            // 🛠 Handle pagination links by AJAX
+            $(document).on('click', '.paginationLink', function(e){
+                e.preventDefault();
+                let url = new URL($(this).attr('href'), window.location.origin);
+                let params = new URLSearchParams(url.search);
+
+                // Merge with current search form data
+                let formData = $('#searchDepartmentForm').serializeArray();
+                formData.forEach(item => {
+                    if (!params.has(item.name)) {
+                        params.append(item.name, item.value);
+                    }
+                });
+
+                fetchLovs(params.toString());
+            });
+
+            // Common function to fetch department list
+
+
+        });
+
+        function fetchLovs(queryString) {
+            $.ajax({
+                url: `{% url 'list_lov' %}?${queryString}`,
+                type: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'},
+                success: function(response) {
+                    $('#listingContent').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching departments:', error);
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

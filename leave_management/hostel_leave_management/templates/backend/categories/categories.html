@@ -1,0 +1,341 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %}Home | My Website{% endblock %}
+
+{% block content %}
+    {% load static %}
+
+    <div class="content"><!-- Content start-->
+        <div class="card"><!-- Card start-->
+            <div class="card-body">
+                {% if action == 'add' or action == 'edit' or action == 'view' %}
+                    <form action="" --class="form-validate-jquery" enctype="multipart/form-data" method="POST">
+                                        {% csrf_token %}
+                        <div class="header-lines">
+                        <!-- Buttons start here -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h3>
+                                        <b>
+                                            {% if action == 'add' %}
+                                                Create
+                                            {% elif action == 'edit' %}
+                                                Edit
+                                            {% elif action == 'view' %}
+                                                View
+                                            {% endif %}
+                                            Category
+                                        </b>
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    {% if action == 'add' or action == 'edit' %}
+                                        <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                        <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                    {% endif %}
+
+                                    <a href="{% url 'list_categories' %}" class="btn btn-default btn-sm">Close</a>
+                                </div>
+                            </div>
+                        <!-- Buttons end here -->
+
+                            <fieldset>
+                                <section class="header-section">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label category_name"><span class="text-danger">*</span> Category Name</label>
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" id="category_name" name="category_name" autocomplete="off" class="form-control" value="{{ categories.category_name|default:'' }}" placeholder="Category Name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label cat_level_1"> Category Level 1</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <select name="cat_level_1" id="cat_level_1" class="form-control">
+                                                        <option value="">- Select -</option>
+                                                        {% for row in cat_level_1_list %}
+                                                            <option value="{{ row.list_type_value_id }}"
+                                                                {% if categories and row.list_type_value_id == categories.cat_level_1_id %}selected{% endif %}>
+                                                                {{ row.list_value|capfirst }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label start_date"><span class="text-danger">*</span> Start Date</label>
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" id="start_date" name="start_date" autocomplete="off" readonly class="form-control previous_date" value="{{ categories.start_date|date:'d-M-Y' }}" placeholder="Start Date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label description">Category Description</label>
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <textarea name="description" id="description" rows="1" autocomplete="off" class="form-control" placeholder="Description">{{ categories.category_description|default:'' }}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label cat_level_2"> Category Level 2</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <select name="cat_level_2" id="cat_level_2" class="form-control searchDropdown">
+                                                        <option value="">- Select -</option>
+                                                        {% for row in cat_level_2_list %}
+                                                            <option value="{{ row.list_type_value_id }}"
+                                                                {% if categories and row.list_type_value_id == categories.cat_level_2_id %}selected{% endif %}>
+                                                                {{ row.list_value|capfirst }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label end_date"><span class="text-danger">*</span> End Date</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" id="end_date" name="end_date" autocomplete="off" readonly class="form-control previous_date" value="{{ categories.end_date|date:'d-M-Y' }}" placeholder="End Date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label disp_seq_num">Disp Seq Number</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <textarea name="disp_seq_num" id="disp_seq_num" rows="1" autocomplete="off" class="form-control" placeholder="Disp Seq Num">{{ categories.disp_seq_num|default:'' }}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label cat_level_3"> Category Level 3</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <select name="cat_level_3" id="cat_level_3" class="form-control">
+                                                        <option value="">- Select -</option>
+                                                        {% for row in cat_level_3_list %}
+                                                            <option value="{{ row.list_type_value_id }}"
+                                                                {% if categories and row.list_type_value_id == categories.cat_level_3_id %}selected{% endif %}>
+                                                                {{ row.list_value|capfirst }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group text-right">
+                                                        <label class="col-form-label category_image"><span class="text-danger">*</span> Image</label>
+                                                    </div>
+                                                    </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+														                            <input type="file" name="category_image" id="category_image" accept="image/*" class="form-control singleImage">
+                                                        {% if categories.encoded_image %}
+                                                            <img src="{{ categories.encoded_image }}" alt="Category Image" style="width: 100px;height:100px" />
+                                                        {% elif categories.image %}
+                                                            <!-- Or display physical image stored in the media folder -->
+                                                            <img src="{{ categories.image.url }}" alt="Category Image" style="width: 100px;height:100px"/>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+                                <script>
+                                    $(document).ready(function () {
+                                        $(".default_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy"
+                                        });
+
+                                        $(".future_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy",
+                                            maxDate: 0
+                                        });
+                                        $(".previous_date").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1950:2040",
+                                            dateFormat: "dd-M-yy",
+                                            minDate: 0
+                                        });
+                                    });
+                                </script>
+
+                            </fieldset>
+                            <div class="col-md-12 mt-3 pr-0 text-right">
+                                {% if action == 'add' or action == 'edit' %}
+                                    <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                    <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                {% endif %}
+
+                                <a href="{% url 'list_categories' %}" class="btn btn-default btn-sm">Close</a>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-6"><h3><b>{{ page_title }}</b></h3></div>
+                        <div class="col-md-6 float-right text-right">
+                            <a href="{% url 'add_categories' %}" class="btn btn-info btn-sm">
+                                Create Creatory
+                            </a>
+
+                        </div>
+                    </div>
+                    <form action="" class="form-validate-jquery" method="get" id="searchCategoryForm">
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="row">
+                                <label class="col-form-label col-md-5 text-right">Category Name</label>
+                                <div class="form-group col-md-7">
+                                  <select name="category_id" id="category_id" class="form-control searchDropdown">
+                                    <option value="">- Select -</option>
+                                    {% for row in categoriesNamesAll %}
+                                    {% with selected=request.GET.category_id %}
+                                        <option value="{{ row.category_id }}" {% if selected == row.category_id|stringformat:"s" %}selected{% endif %}>
+                                            {{ row.category_name|capfirst }}
+                                        </option>
+                                    {% endwith %}
+                                    {% endfor %}
+                                </select>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <label class="col-form-label col-md-5 text-right">Status</label>
+                                    <div class="form-group col-md-7">
+                                        <select name="active_flag" id="active_flag" class="form-control searchDropdown">
+                                            {# Optional default option #}
+                                            <!-- <option value="">- Select -</option> -->
+                                            {% for row in activeFlag %}
+                                            {% with selected=request.GET.active_flag %}
+                                                <option value="{{ row.list_code }}" {% if selected == row.list_code %}selected{% endif %}>
+                                                {{ row.list_value|capfirst }}
+                                                </option>
+                                            {% endwith %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-info">Search <i class="fa fa-search"></i></button>
+                                <a href="{% url 'list_categories' %}" title="Clear" class="btn btn-default">Clear</a>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="listingContent">
+                        {% include 'backend/categories/categories_list_partial.html' %}
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function() {
+
+            $('#searchCategoryForm').on('submit', function(e) {
+                e.preventDefault();
+                fetchCategories($(this).serialize());
+            });
+
+            // 🛠 Change limit by AJAX
+            $(document).on('change', '#limitSelect', function() {
+
+                let formData = $('#searchCategoryForm').serializeArray();
+                formData.push({name: 'limit', value: $(this).val()});
+                fetchCategories($.param(formData));
+            });
+
+            // 🛠 Handle pagination links by AJAX
+            $(document).on('click', '.paginationLink', function(e){
+                e.preventDefault();
+                let url = new URL($(this).attr('href'), window.location.origin);
+                let params = new URLSearchParams(url.search);
+
+                // Merge with current search form data
+                let formData = $('#searchCategoryForm').serializeArray();
+                formData.forEach(item => {
+                    if (!params.has(item.name)) {
+                        params.append(item.name, item.value);
+                    }
+                });
+
+                fetchCategories(params.toString());
+            });
+
+            // Common function to fetch department list
+
+
+        });
+
+        function fetchCategories(queryString) {
+            $.ajax({
+                url: `{% url 'list_categories' %}?${queryString}`,
+                type: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'},
+                success: function(response) {
+                    $('#listingContent').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching category:', error);
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "backend/base/base.html" %}
+{% block title %}Users | My Website{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="content">
+  <div class="card">
+    <div class="card-body">
+
+      <ul class="nav nav-tabs d-none">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#listTab">User List</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#createTab">User Form</a></li>
+      </ul>
+
+      <div class="tab-content mt-3">
+
+        <div class="tab-pane fade" id="createTab">
+          <div class="row">
+            <div class="col-md-6"><h5 id="page_title"><b>Create User</b></h5></div>
+            <div class="col-md-6 text-end">
+              
+            </div>
+          </div><hr>
+
+          <form id="userForm" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="user_id" name="user_id">
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row mt-2">
+                  <label class="col-md-4 text-end col-form-label">User Type</label>
+                  <div class="col-md-8">
+                    <select id="user_type" class="form-control" onchange="getEmployee(this.value)">
+                        <option value="">Select</option>
+                        {% for users in userType %}
+                        <option value="{{ users.list_type_value_id }}">{{ users.list_value }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="row mt-2" id="employee_div" style="display:none;">
+                  <label class="col-md-4 text-end col-form-label">Employee</label>
+                    <div class="col-md-8">
+                        <select id="employee_id" class="form-control" onchange="getEmployeeDetails(this.value)"></select>
+                    </div>
+                </div>
+                <input type="hidden" name="email" id="email" placeholder="Email">
+                <div class="row mt-2">
+                  <label class="col-md-4 text-end col-form-label">User Name</label>
+                  <div class="col-md-8"><input type="text" id="user_name" class="form-control"></div>
+                </div>
+                <div class="row mt-2">
+                  <label class="col-md-4 text-end col-form-label">Password</label>
+                  <div class="col-md-8">
+                    <input type="password" id="password" class="form-control">
+                    <small class="text-muted">Leave blank to keep existing password</small>
+                </div>
+                  
+                </div>
+                <div class="row mt-2">
+                  <label class="col-md-4 text-end col-form-label">From Date</label>
+                  <div class="col-md-8"><input type="date" id="from_date" class="form-control"></div>
+                </div>
+                <div class="row mt-2">
+                  <label class="col-md-4 text-end col-form-label">To Date</label>
+                  <div class="col-md-8"><input type="date" id="to_date" class="form-control"></div>
+                </div>
+                <div class="row mt-2">
+                  <label class="col-md-4 text-end col-form-label">Description</label>
+                  <div class="col-md-8"><textarea id="description" class="form-control"></textarea></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <h5><b>User Roles</b></h5>
+                <div class="alert alert-danger line-items-error" style="display:none;"></div>
+                <table class="table table-bordered" id="role_items">
+                  <thead>
+                    <tr><th class="text-center">Action</th><th>Role</th><th class="text-center">Status</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addRole()">Add</button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addRole()">Add</button>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12 text-right">
+                        <a href="{% url 'users-list' %}" class="btn btn-default btn-sm">Close</a>
+                        <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save & Continue" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                    
+                    </div>
+                </div>
+
+          </form>
+        </div>
+
+        <div class="tab-pane fade show active" id="listTab">
+          <div class="row">
+            <div class="col-md-6"><h5><b>Users</b></h5></div>
+            <div class="col-md-6 text-right">
+              <a href="javascript:void(0)" onclick="showForm('CREATETAB')" class="btn btn-info btn-sm">Create User</a>
+            </div>
+          </div><hr>
+          
+          	<div class="row mb-3">
+				<div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5"><span class="text-danger">*</span> User Name</label>
+                        <div class="form-group col-md-7">
+                            <input type="text" id="search_user_name" class="form-control" placeholder="User Name">   
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5"><span class="text-danger">*</span> Status</label>
+                        <div class="form-group col-md-7">
+                            <select id="active_flag" class="form-control searchDropdown">
+                                {% for row in activeFlag %}
+                                    <option value="{{ row.list_code }}">{{ row.list_value|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <a href="{% url 'users-list' %}" title="Clear" class="btn btn-default">Clear</a>
+                </div>
+          	</div>
+			 <div class="row pb-3">
+                <div class="col-md-6">
+                    <div id="exportButtons" class="mb-2" style="display:none;">
+                        
+                    </div>
+
+                </div>
+                <div class="col-md-6 text-right float-right">
+                    <label>Show 
+                        <select id="pageSize" class="form-control form-control-sm" style="width:auto; display:inline-block;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+          <table class="table table-bordered" id="user_table">
+            <thead>
+              <tr><th class="text-center">Controls</th><th>User Name</th><th>User Type</th><th class="text-center">Status</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function showForm(formType) 
+    {
+        if(formType == 'CREATETAB') {
+            $('#listTab').removeClass('active show');
+            $('#createTab').addClass('active show');
+        }
+        else
+        {
+            $('#createTab').removeClass('active show');
+            $('#listTab').addClass('active show');
+        }
+    }
+</script>
+<script src="{% static 'assets/backend/assets/js/users/users.js' %}"></script>
+{% endblock %}

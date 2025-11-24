@@ -1,0 +1,177 @@
+{% extends "backend/base/base.html" %}
+
+{% block title %}Home | My Website{% endblock %}
+
+{% block content %}
+    {% load static %}
+
+    <div class="content"><!-- Content start-->
+        <div class="card"><!-- Card start-->
+            <div class="card-body">
+                {% if action == 'add' or action == 'edit' or action == 'view' %}
+
+                        <div class="header-lines">
+                        <!-- Buttons start here -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                <h3><b>List of Values</b></h3>
+                                </div>
+
+                                <div class="col-md-6 text-right">
+                                <a href="{% url 'list_lov' %}" class='btn btn-info btn-sm'>
+                                    Back
+                                </a>
+                                <a title="Edit" href="{% url 'edit_view_lov' lov.pk %}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                </div>
+
+                            </div>
+                            <section class="header-section">
+                                <div class="row">
+                                    <div class="col-md-6 mb-1">
+                                        <div class="row">
+                                            <label class="col-md-3">List Name</label>
+                                            <label class="col-md-1">:</label>
+                                            <div class="col-md-6">
+                                                {{ lov.list_name|default:"" }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-1">
+                                        <div class="row">
+                                            <label class="col-md-3">Start Date</label>
+                                            <label class="col-md-1">:</label>
+                                            <div class="col-md-6">
+                                                {{ lov.start_date|default:"" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label class="col-md-3">List Description</label>
+                                            <label class="col-md-1">:</label>
+                                            <div class="col-md-6">
+                                                {{ lov.description|default:"" }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label class="col-md-3">End Date</label>
+                                            <label class="col-md-1">:</label>
+                                            <div class="col-md-6">
+                                                {{ lov.end_Date|default:"" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h3>
+                                        <b>
+                                            {% if action == 'add' %}
+                                                Create
+                                            {% elif action == 'edit' %}
+                                                Edit
+                                            {% elif action == 'view' %}
+                                                View
+                                            {% endif %}
+                                            List Type Values
+                                        </b>
+                                    </h3>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    {% if action == 'add' or action == 'edit' %}
+                                        <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                                        <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
+                                    {% endif %}
+
+                                    <a href="{% url 'list_lov' %}" class="btn btn-default btn-sm">Close</a>
+                                </div>
+                            </div>
+                        <!-- Buttons end here -->
+
+                            <fieldset>
+                                <section class="header-section">
+                                    <form action="" --class="form-validate-jquery" enctype="multipart/form-data" method="POST" id="listTypeValue">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="form-group col-md-3">
+                                                <label class="col-form-label float-left"><span class="text-danger">*</span> List Code </label>
+                                                <input type="text" name="list_code" id="list_code" autocomplete="off" required class="form-control" value="" placeholder="List Code">
+                                                <input type="hidden" name="list_type_id" value="{{ lov.list_type_id|default:'null' }}">
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <label class="col-form-label float-left"><span class="text-danger">*</span> List Value </label>
+                                                <input type="text" name="list_value" id="list_value" autocomplete="off" required class="form-control" value="" placeholder="List Value">
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <label class="col-form-label float-left">Order Sequence </label>
+                                                <input type="number" name="order_sequence" id="order_sequence" autocomplete="off" class="form-control" value="" placeholder="Order Sequence">
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <label class="col-form-label float-left">Short Description</label>
+                                                <input type="text" name="short_description" id="short_description" autocomplete="off"  class="form-control" value="" placeholder="Short Description">
+                                            </div>
+                                            <div class="form-group col-md-12 mt-4 text-right" style="padding: 10px 0px 0px 0px">
+                                                <label class="col-form-label"></label>
+                                                <input type="submit" name="Add" value="Add" class="btn btn-primary">
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </section>
+                            </fieldset>
+                        </div>
+                        <div id="listingContent">
+                            {% include 'backend/listTypeValues/listType_list_partial.html' %}
+                        </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#listTypeValue').on('submit', function (e) {
+                e.preventDefault(); // prevent default form submission
+
+                let formData = new FormData(this);
+                let actionUrl = "{% url 'lov_list_type_value_create' lov_id %}";  // from view
+
+                $.ajax({
+                    url: actionUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+
+                        $('#listingContent').html(response);
+                        $('#listTypeValue')[0].reset();
+                    },
+                    error: function (xhr) {
+                        alert("Something went wrong. Please check your input.");
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+        </script>
+
+
+{% endblock %}

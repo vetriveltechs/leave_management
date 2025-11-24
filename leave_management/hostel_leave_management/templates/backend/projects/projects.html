@@ -1,0 +1,197 @@
+{% extends "backend/base/base.html" %}
+{% block title %}Projects | My Website{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="content">
+  <div class="card">
+    <div class="card-body">
+
+        <ul class="nav nav-tabs d-none" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#listTab" role="tab">Project List</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#createTab" role="tab">Project Form</a>
+            </li>
+        </ul>
+
+
+
+      <div class="tab-content mt-3">
+
+        <!-- FORM TAB -->
+        <div class="tab-pane fade" id="createTab" role="tabpanel">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 id="page_title"><b>Create Project</b></h5>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="javascript:void(0)" onclick="showForm('LISTTAB')"  class="btn btn-info btn-sm">Back</a>
+                </div>
+            </div>
+            <hr>
+
+            <form id="projectForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="project_id" name="project_id">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label project_name" for="project_name"><span class="text-danger">*</span> Project Name</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" id="project_name" name="project_name" class="form-control" placeholder="Project Name">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-4 text-right">
+                                <label class="col-form-label" for="project_description">Description</label>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea id="project_description" name="project_description" class="form-control" placeholder="Project Description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINES -->
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h5><b>Lines</b></h5>
+                        <table class="table table-bordered" id="line_items">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width:10%;">Action</th>
+                                    <th style="width:45%;">Line Title</th>
+                                    <th style="width:45%;">Line Description</th>
+                                    <th class="text-center" style="width:10%;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="line-items-error"></div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addLineCheck()">Add</button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addLineCheck()">Add</button>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12 text-right">
+                        <a href="{% url 'projects' %}" class="btn btn-default btn-sm">Close</a>
+                        <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save & Continue" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                    
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+
+        <!-- LIST TAB -->
+        <div class="tab-pane fade show active" id="listTab" role="tabpanel">
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><b>Project List</b></h5>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="javascript:void(0)" onclick="showForm('CREATETAB')"  class="btn btn-info btn-sm">Create Project</a>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row my-3">
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5"><span class="text-danger">*</span> Project Name</label>
+                        <div class="form-group col-md-7">
+                            <input type="text" id="search_project_name" class="form-control searchDropdown" placeholder="Project Name">   
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5"><span class="text-danger">*</span> Status</label>
+                        <div class="form-group col-md-7">
+                            <select id="active_flag" class="form-control searchDropdown">
+                                {% for row in activeFlag %}
+                                    <option value="{{ row.list_code }}">{{ row.list_value|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <a href="{% url 'projects' %}" title="Clear" class="btn btn-default">Clear</a>
+                </div>
+            </div>
+
+            <div class="row pb-3">
+                <div class="col-md-6">
+                    <div id="exportButtons" class="mb-2" style="display:none;">
+                        
+                    </div>
+
+                </div>
+                <div class="col-md-6 text-right float-right">
+                    <label>Show 
+                        <select id="pageSize" class="form-control form-control-sm" style="width:auto; display:inline-block;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <table class="table table-bordered" id="project_table">
+                <thead>
+                    <tr>
+                        <th class="tab-md-100 text-center">Controls</th>
+                        <th>Project Name</th>
+                        <th>Description</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function showForm(formType) 
+    {
+        if(formType == 'CREATETAB') {
+            $('#listTab').removeClass('active');
+            $('#listTab').removeClass('show');
+            $('#createTab').addClass('active');
+            $('#createTab').addClass('show');
+        }
+        else
+        {
+            $('#createTab').removeClass('active');
+            $('#createTab').removeClass('show');
+            $('#listTab').addClass('active');
+            $('#listTab').addClass('show');
+        }
+    }
+</script>
+<script src="{% static 'assets/backend/assets/js/projects/projects.js' %}"></script>
+{% endblock %}

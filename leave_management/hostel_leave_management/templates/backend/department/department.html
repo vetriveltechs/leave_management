@@ -1,278 +1,127 @@
 {% extends "backend/base/base.html" %}
-
-{% block title %}Home | My Website{% endblock %}
-
+{% block title %}Department | My Website{% endblock %}
 {% block content %}
-    {% load static %}
-    <div class="modal fade" id="importcountryCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" --style="background: #1a4363;color: #fff;">
-                    <h5 class="modal-title" id="exampleModalLabel"><b>Import Department</b></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="" enctype="multipart/form-data" method="post">
-                  {% csrf_token %}
-                    <div class="modal-body">
+{% load static %}
 
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+            <!-- Department Form -->
+            <form id="departmentForm" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="hidden" id="department_id" name="department_id">
+                        <h4 class="card-title" id="page_title"><b>Create Department</b></h4>
+                    </div>
+                </div>
+
+                <fieldset>
+                    <section class="header-section">
                         <div class="row">
-                            <div class="col-md-12 mb-3">
-                                <div class="well well-small">
-                                    The correct column order is <span class="text-info-"> ( Depatment Name, Description)</span>&nbsp; &amp; You must follow this.
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label department_name"><span class="text-danger">*</span> Department Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="department_name" name="department_name" autocomplete="off" class="form-control" placeholder="Department Name">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 text-right">
+                                        <label class="col-form-label">Description</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea name="description" id="description" rows="1" autocomplete="off" class="form-control" placeholder="Description"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <span class="text-danger-" style="font-size:12px !important;"><b>Note : </b> The first line in downloaded csv file should remain as it is. Please do not change the order of columns and Update valid data..</span><br>
-                            </div>
                         </div>
+                    </section>
+                </fieldset>
 
-                        <div class="row">
-                            <div class="form-group col-md-9">
-                                <input type="file" name="csv"  id="chooseFile" class="form-control singleDocument" onchange="return validateSingleDocumentExtension(this)" required />
-                                <span style="color:#a0a0a0;">Note : Upload format CSV and upload size is 5 mb.</span>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="{% static 'assets/excel_files/departments.csv' %}" class="btn btn-info btn-flat btn-sm pull-right" title="Download Sample File">
-                                    <i class="fa fa-download"></i> Download
-                                </a>
-                            </div>
-                        </div>
+                <div class="col-md-12 mt-3 text-right">
+                    <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save & Continue" class="btn btn-primary btn-sm form_submit_valid">Save</button>
+                    <button type="reset" id="reset_btn" class="btn btn-default btn-sm">Reset</button>
+                </div>
+            </form>
 
-
-                        <script>
-                            /** Single Document Type & Size Validation **/
-                            function validateSingleDocumentExtension(fld)
-                            {
-                                var fileUpload = fld;
-
-                                if (typeof (fileUpload.files) != "undefined")
-                                {
-                                    var size = parseFloat( fileUpload.files[0].size / 1024 ).toFixed(2);
-                                    var validSize = 1024 * 5; //1024 - 1Mb multiply 4mb
-
-                                    //var validSize = 500;
-
-                                    if( size > validSize )
-                                    {
-                                        //alert("Document upload size is 4 MB");
-                                        alert("File size should not exceed 5 MB.");
-                                        $('.singleDocument').val('');
-                                        var value = 1;
-                                        return false;
-                                    }
-                                    else if(!/(\.csv)$/i.test(fld.value))
-                                    //else if(!/(\.pdf)$/i.test(fld.value))
-                                    {
-                                        alert("Invalid document file type.");
-                                        $('.singleDocument').val('');
-                                        return false;
-                                    }
-
-                                    if(value != 1)
-                                        return true;
-                                }
-                            }
-                        </script>
-                    </div>
-                    <div class="modal-footer">
-                        <!-- <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button> -->
-                        <button type="submit" class="btn btn-primary btn-sm ml-1">Import</button>
-                    </div>
-                </form>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="card-title"><b>Departments</b></h4>
+                </div>
             </div>
+
+            <!-- Search Section -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">Department Name</label>
+                        <div class="form-group col-md-7">
+                            <input type="text" id="search_department_name" class="form-control searchDropdown" placeholder="Department Name">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-form-label col-md-5">Status</label>
+                        <div class="form-group col-md-7">
+                            <select id="active_flag" class="form-control searchDropdown">
+                                {% for row in activeFlag %}
+                                    <option value="{{ row.list_code }}">{{ row.list_value|capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <a href="{% url 'department-list' %}" title="Clear" class="btn btn-default">Clear</a>
+                </div>
+            </div>
+
+            <div class="row pb-3">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6 text-right float-right">
+                    <label>Show 
+                        <select id="pageSize" class="form-control form-control-sm" style="width:auto; display:inline-block;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered table-hover" id="department_table">
+                <thead>
+                    <tr>
+                        <th class="tab-md-200">Controls</th>
+                        <th class="tab-md-200">Department Name</th>
+                        <th class="tab-md-200">Description</th>
+                        <th class="tab-md-200 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="row mb-2">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-right">
+                    <div id="pagination"></div>
+                </div>
+            </div>
+
+            <div id="response" class="mt-3"></div>
         </div>
     </div>
-            <div class="content"><!-- Content start-->
-                <div class="card"><!-- Card start-->
-                    <div class="card-body">
-                        {% if action == 'add' or action == 'edit' or action == 'view' %}
-                            <form action="" --class="form-validate-jquery" enctype="multipart/form-data" method="POST">
-								                {% csrf_token %}
-                                <div class="header-lines">
-                                <!-- Buttons start here -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-											<h3>
-												<b>
-													{% if action == 'add' %}
-														Create
-													{% elif action == 'edit' %}
-														Edit
-													{% elif action == 'view' %}
-														View
-													{% endif %}
-													Department
-												</b>
-											</h3>
-                                        </div>
-                                        <div class="col-md-6 text-right">
-                                            {% if action == 'add' or action == 'edit' %}
-                                                <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
-                                                <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
-                                            {% endif %}
+</div>
 
-                                            <a href="{% url 'list_departments' %}" class="btn btn-default btn-sm">Close</a>
-                                        </div>
-                                    </div>
-                                <!-- Buttons end here -->
-
-                                    <fieldset>
-                                        <section class="header-section">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                        <div class="form-group text-right">
-                                                            <label class="col-form-label department_name"><span class="text-danger">*</span> Department Name</label>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input type="text" id="department_name" name="department_name" autocomplete="off" class="form-control" value="{% if department %}{{ department.department_name }}{% endif %}" placeholder="Department Name">
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                    <div class="form-group text-right">
-                                                        <label class="col-form-label description">Description</label>
-                                                    </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <textarea name="description" id="description" rows="1" autocomplete="off" class="form-control" placeholder="Description">{% if department %}{{ department.description }}{% endif %}</textarea>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                </div>
-
-                                            </div>
-                                        </section>
-                                    </fieldset>
-                                    <div class="col-md-12 mt-3 pr-0 text-right">
-                                        {% if action == 'add' or action == 'edit' %}
-                                            <button type="submit" name="save_btn" id="save_btn" onclick="return saveBtn('save_btn');" title="Save" class="btn btn-primary btn-sm form_submit_valid">Save</button>
-                                            <button type="submit" name="submit_btn" id="submit_btn" onclick="return saveBtn('submit_btn');" title="Submit" class="btn btn-primary btn-sm form_submit_valid">Submit</button>
-                                        {% endif %}
-
-                                        <a href="{% url 'list_departments' %}" class="btn btn-default btn-sm">Close</a>
-                                	</div>
-								</div>
-                            </form>
-                        {% else %}
-                            <div class="row">
-                                <div class="col-md-6"><h3><b>{{ page_title }}</b></h3></div>
-                                <div class="col-md-6 float-right text-right">
-
-                                  <a href="#" data-toggle="modal" data-target="#importcountryCSV" title="Import" class="btn btn-outline-warning btn-sm">
-                                    <i class="icon-import"></i> Import
-                                  </a>
-                                  <a href="{% url 'add_department' %}" class="btn btn-info btn-sm">
-                                      Create Department
-                                  </a>
-
-                                </div>
-                            </div>
-                            <form action="" class="form-validate-jquery" method="get" id="searchDepartmentForm">
-                                <div class="row mt-3">
-                                    <div class="col-md-4">
-                                        <div class="row">
-                                        <label class="col-form-label col-md-5 text-right">Department Name</label>
-                                        <div class="form-group col-md-7">
-                                        <input type="search" class="form-control" name="department_name" value="{{ request.GET.department_name|default:'' }}" placeholder="Department Name" autocomplete="off">
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="row">
-                                            <label class="col-form-label col-md-5 text-right">Status</label>
-                                            <div class="form-group col-md-7">
-                                                <select name="active_flag" id="active_flag" class="form-control searchDropdown">
-                                                    {# Optional default option #}
-                                                    <!-- <option value="">- Select -</option> -->
-                                                    {% for row in activeFlag %}
-                                                    {% with selected=request.GET.active_flag %}
-                                                        <option value="{{ row.list_code }}" {% if selected == row.list_code %}selected{% endif %}>
-                                                        {{ row.list_value|capfirst }}
-                                                        </option>
-                                                    {% endwith %}
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <button type="submit" class="btn btn-info">Search <i class="fa fa-search"></i></button>
-                                        <a href="{% url 'list_departments' %}" title="Clear" class="btn btn-default">Clear</a>
-                                    </div>
-                                </div>
-                            </form>
-                            <div id="listingContent">
-                                {% include 'backend/department/department_list_partial.html' %}
-                            </div>
-
-                        {% endif %}
-
-                    </div>
-                </div>
-            </div>
-            <script>
-
-                $(document).ready(function() {
-
-                    $('#searchDepartmentForm').on('submit', function(e) {
-                        e.preventDefault();
-                        fetchDepartments($(this).serialize());
-                    });
-
-                    // 🛠 Change limit by AJAX
-                    $(document).on('change', '#limitSelect', function() {
-                       
-                        let formData = $('#searchDepartmentForm').serializeArray();
-                        formData.push({name: 'limit', value: $(this).val()});
-                        fetchDepartments($.param(formData));
-                    });
-
-                    // 🛠 Handle pagination links by AJAX
-                    $(document).on('click', '.paginationLink', function(e){
-                        e.preventDefault();
-                        let url = new URL($(this).attr('href'), window.location.origin);
-                        let params = new URLSearchParams(url.search);
-
-                        // Merge with current search form data
-                        let formData = $('#searchDepartmentForm').serializeArray();
-                        formData.forEach(item => {
-                            if (!params.has(item.name)) {
-                                params.append(item.name, item.value);
-                            }
-                        });
-
-                        fetchDepartments(params.toString());
-                    });
-
-                    // Common function to fetch department list
-
-
-                });
-
-                function fetchDepartments(queryString) {
-                    $.ajax({
-                        url: `{% url 'list_departments' %}?${queryString}`,
-                        type: 'GET',
-                        headers: {'X-Requested-With': 'XMLHttpRequest'},
-                        success: function(response) {
-                            $('#listingContent').html(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching departments:', error);
-                        }
-                    });
-                }
-            </script>
-
+<script src="{% static 'assets/backend/assets/js/department/department.js' %}"></script>
 {% endblock %}

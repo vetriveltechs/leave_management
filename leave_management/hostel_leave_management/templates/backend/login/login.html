@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{% static 'assets/backend/css/bootstrap.min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'assets/backend/assets/css/main.css' %}">
+		<script src="{% static 'assets/backend/assets/js/jquery.js' %}"></script>
+		<script src="{% static 'assets/backend/assets/js/jquery.validate.js' %}"></script>
+		<script src="{% static 'assets/backend/assets/js/form_validation.js' %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/backend/assets/css/fonts/font-awesome.css' %}"/>
+		<link rel="icon" type="image/png" sizes="16x16" href="{% static 'uploads/favicon.png' %}">
+		<title> Admin Login</title>
+		<style>
+			em.error {
+				color: red;
+				font-style: normal;
+			}
+
+			.message-error.message {
+				text-align: center;
+				color: red;
+				font-size: 17px;
+				position: relative;
+				top: 16px;
+			}
+
+			a.view-password {
+				float: right !important;
+				padding: 10px !important;
+				font-size: 15px !important;
+				margin: -42px 0px 0px 0px;
+			}
+			a.view-password:hover {
+				color: #464646;
+			}
+
+			.forgot-password a, .forgot-password a:hover {
+				color: #000;
+			}
+			.login100-form-btn span {
+			  cursor: pointer;
+			  display: inline-block;
+			  position: relative;
+			  transition: 0.5s;
+			}
+
+			.login100-form-btn span:after {
+			  content: '\00bb';
+			  position: absolute;
+			  opacity: 0;
+			  top: 0;
+			  right: -20px;
+			  transition: 0.5s;
+			}
+
+			.login100-form-btn:hover span {
+			  padding-right: 25px;
+			}
+
+			.login100-form-btn:hover span:after {
+			  opacity: 1;
+			  right: 0;
+			}
+            span.downloadlink {
+                float: left;
+                width: 100%;
+                padding-top: 10px;
+                display: contents;
+            }
+            a.appdownload {
+                color: red;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+            .app-download a {
+                background: linear-gradient(
+                45deg
+                , #160442, #160442);
+                color: #fff;
+                padding: 15px 10px;
+                border-radius: 5px;
+                font-size: 26px;
+            }
+            .app-download {
+                position: absolute;
+                top: 104%;
+                /* text-align: center; */
+            }
+            @media (max-width: 400px){
+                .app-download a {
+                    font-size: 20px;
+                    float: right;
+                    width: 100%;
+                    text-align: center;
+                }
+                .app-download img {
+                    height:30px!important;
+                    width:30px!important;}
+            }
+        </style>
+	</head>
+	<body>
+		<div class="row justify-content-center align-items-center" style="background-image: url('{% static 'uploads/bg6.png' %}');
+                width:100%;
+                height:100vh;
+                background-size:cover;
+                background-repeat:no-repeat;
+                background-position:center;">
+            <div class="col-md-4" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <div class="wrap-login100 wrap-login100-new" style="background-color: #F7F7F7;">
+                                {% if error %}
+                                <div id="errorMessage" class="message-error message text-danger animated-error">{{ error }}</div>
+                                    {% endif %}
+									<form method="post" action="" --id="formValidation" class="login100-form validate-form">
+                                        {% csrf_token %}
+										<span class="login100-form-logo">
+											<img src="{% static 'uploads/logo1.png' %}" style="max-height: 45px;"/>
+										</span>
+										<div class="wrap-input100">
+											<input class="input100 newlogin" required type="text" name="email" placeholder="Email /User Name" autocomplete="off">
+											<span class="focus-input100" --data-placeholder="&#xf207;"></span>
+										</div>
+
+										<div class="wrap-input100 validate-input">
+											<input class="input100 newlogin" required type="password" id="password" name="password" placeholder="Password">
+											<span --class="focus-input100" --data-placeholder="&#xf191;">
+												<a class="view-password" href="javascript:void(0);" onclick="viewPassword()">
+													<i class="fa fa-eye"></i>
+												</a>
+											</span>
+										</div>
+
+										<div class="container-login100-form-btn">
+											<button class="login100-form-btn" style="background-color:darkgoldenrod"><span>Login</span></button>
+										</div>
+
+										<script>
+											function viewPassword()
+											{
+												var x = document.getElementById("password");
+												if (x.type === "password")
+												{
+													x.type = "text";
+												} else {
+													x.type = "password";
+												}
+											}
+										</script>
+
+									</form>
+
+									<span class="copy-right">© . All Rights Reserved.</span>
+								</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            $(document).ready(function () {
+            $('#errorMessage').fadeIn().delay(3000).fadeOut('slow');
+            });
+        </script>
+
+	</body>
+</html>
+
+

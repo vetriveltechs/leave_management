@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hostel_leave_management'
+    'hostel_leave_management',
+    'rest_framework',
+    'django_filters',
+    
 ]
 
 MIDDLEWARE = [
@@ -86,11 +89,16 @@ WSGI_APPLICATION = 'leave_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hostel_leave_management',
+        'NAME': 'leave_management',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',  # Or your MySQL host
+        'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+            'use_unicode': True,
+        },
     }
 }
 
@@ -139,8 +147,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'hostel_leave_management/static/')]  # Directory for your static files
 
-MEDIA_URL = '/uploads/'  # URL for media files (uploaded files)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'hostel_leave_management/static/')  # Directory where uploaded files are stored  # Directory where uploaded files are stored
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'hostel_leave_management/static/uploads')
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -148,5 +156,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
+    ),
+    
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
